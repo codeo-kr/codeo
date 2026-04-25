@@ -1,0 +1,3554 @@
+{
+  "users": [
+    {
+      "id": "admin",
+      "name": "원장계정",
+      "role": "원장",
+      "passwordHash": "$2b$10$KnYtAsLwhFQ/eXdJ9JImqugttKxPEDyDuamOB5R2yLihDgTVT3yGi"
+    },
+    {
+      "id": "vice",
+      "name": "부원장계정",
+      "role": "부원장",
+      "passwordHash": "$2b$10$i/2lccRMEzFIKSrX7nfTQO8MG29MGbNU8GOrXfQ0M4Nmn2sZqZKlu"
+    },
+    {
+      "id": "teacher",
+      "name": "강사계정",
+      "role": "강사",
+      "passwordHash": "$2b$10$SBH7wK7GCE4R2OsLMHoJEu8vi5UaDEd4pFHUsXQbbDAenBg7oLft2"
+    },
+    {
+      "id": "counsel",
+      "name": "상담계정",
+      "role": "상담",
+      "passwordHash": "$2b$10$c7dgXkmPo6MySaUL8IObhuC.AoIv7vj4l20shnpH4x0i9EpCCsm/q"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "n4PcfzZBXlPHRvT3EmJAv",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T07:30:07.998Z"
+    },
+    {
+      "id": "1wK0yIkqt4M8aI8bcS3ud",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T07:29:25.219Z"
+    },
+    {
+      "id": "sAq6Mg0n6SRaisKzE0B8S",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa15_youchaemin:2026-04-25",
+      "createdAt": "2026-04-25T07:24:07.895Z"
+    },
+    {
+      "id": "kSr1Z8fyIH3XA_yrBH7bY",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa15_wonjang:2026-04-25",
+      "createdAt": "2026-04-25T07:23:53.157Z"
+    },
+    {
+      "id": "neTAsslCOjcgfNf-Wu6sX",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "보강 수업 변경",
+      "detail": "makeup_zu953d_modz36aa",
+      "createdAt": "2026-04-25T07:13:51.225Z"
+    },
+    {
+      "id": "9uaF0VF7Z-7Zx4HJu-3ld",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T06:51:59.850Z"
+    },
+    {
+      "id": "BYKBw7PoRwUff5DicXxPh",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "보강 등록",
+      "detail": "2026-04-30",
+      "createdAt": "2026-04-25T06:42:59.455Z"
+    },
+    {
+      "id": "66bsIcT1UxOAqByo5U_tZ",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa13_wonjang:2026-04-25",
+      "createdAt": "2026-04-25T06:33:02.601Z"
+    },
+    {
+      "id": "MRIMfCSDSNu463P7ERdh9",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "출결 저장",
+      "detail": "class_sa15_buwonjang:2026-04-25",
+      "createdAt": "2026-04-25T06:21:37.009Z"
+    },
+    {
+      "id": "_Kx7V_zP865UuhkNWvfi-",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "출결 저장",
+      "detail": "class_sa13_buwonjang:2026-04-25",
+      "createdAt": "2026-04-25T05:38:57.819Z"
+    },
+    {
+      "id": "yQEFaT0GnBtF0gnDmqmDO",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "출결 저장",
+      "detail": "class_th17_buwonjang:2026-04-25",
+      "createdAt": "2026-04-25T05:36:50.368Z"
+    },
+    {
+      "id": "5FlvXSfwP_RhLupWOwVoF",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "출결 취소",
+      "detail": "att_j1mxrr_modwp40l",
+      "createdAt": "2026-04-25T05:36:36.544Z"
+    },
+    {
+      "id": "tW-xdCdf_OZz9yXuc7CUT",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "출결 저장",
+      "detail": "class_th17_buwonjang:2026-04-25",
+      "createdAt": "2026-04-25T05:36:04.224Z"
+    },
+    {
+      "id": "DkD8df7gFN-PZCv_cFDZP",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "정연후: 45회 → 46회",
+      "createdAt": "2026-04-25T04:49:36.029Z"
+    },
+    {
+      "id": "J-aXP_B8dzEVu2QC5k7Or",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T04:44:30.357Z"
+    },
+    {
+      "id": "09410PbpLHEzZqSLv3vEu",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 퇴원",
+      "detail": "성유준",
+      "createdAt": "2026-04-25T04:40:11.639Z"
+    },
+    {
+      "id": "KDdLFP8kysDlhvpDCZk4h",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이상원: 0회 → 27회",
+      "createdAt": "2026-04-25T04:39:56.792Z"
+    },
+    {
+      "id": "sdWRpr-J2pGc1tr1ja3Np",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이건우: 1회 → 27회",
+      "createdAt": "2026-04-25T04:39:47.144Z"
+    },
+    {
+      "id": "SnNDRdN2pVKnubuls-V3z",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "백지완: 0회 → 30회",
+      "createdAt": "2026-04-25T04:39:39.368Z"
+    },
+    {
+      "id": "mzsl2TmKO41OG9gzpPwVi",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김유환: 0회 → 30회",
+      "createdAt": "2026-04-25T04:39:24.520Z"
+    },
+    {
+      "id": "yR6sxk0bTaqIPzvcMgw8u",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이준혁: 1회 → 32회",
+      "createdAt": "2026-04-25T04:39:17.907Z"
+    },
+    {
+      "id": "OlcOxsKtOSH5bYAW-qQHP",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "성유준: 0회 → 32회",
+      "createdAt": "2026-04-25T04:38:29.559Z"
+    },
+    {
+      "id": "fzzqhWX9oDSYnP5UaZdPj",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "육온유: 0회 → 29회",
+      "createdAt": "2026-04-25T04:38:10.193Z"
+    },
+    {
+      "id": "F2V7ZIQ_eAGHvvFjXWUhr",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "권지성: 0회 → 46회",
+      "createdAt": "2026-04-25T04:38:01.370Z"
+    },
+    {
+      "id": "zsGTL1kWs6MNvWs0_JXy3",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김동준: 0회 → 37회",
+      "createdAt": "2026-04-25T04:37:52.425Z"
+    },
+    {
+      "id": "FNf3_3qd1VatkClpc5dJV",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이윤형: 0회 → 37회",
+      "createdAt": "2026-04-25T04:37:44.875Z"
+    },
+    {
+      "id": "ZUJAhhUMtrQPkj2yLPkYk",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "염우진: 0회 → 56회",
+      "createdAt": "2026-04-25T04:37:35.489Z"
+    },
+    {
+      "id": "lhFxVr8EZSr9YgqzJMSbe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이윤섭: 0회 → 43회",
+      "createdAt": "2026-04-25T04:37:18.322Z"
+    },
+    {
+      "id": "znYxIZF577bORHnAWrQ__",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이시원: 0회 → 42회",
+      "createdAt": "2026-04-25T04:37:02.707Z"
+    },
+    {
+      "id": "bpvcjpC7SZolJFWFsKAw7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "정연후: 1회 → 45회",
+      "createdAt": "2026-04-25T04:36:45.929Z"
+    },
+    {
+      "id": "EaEeGGQ8RI06mSdqCpJ5C",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "박준우: 0회 → 120회",
+      "createdAt": "2026-04-25T04:36:39.489Z"
+    },
+    {
+      "id": "LEXlUtlx17xxkZSnpJSWV",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김민준B: 0회 → 61회",
+      "createdAt": "2026-04-25T04:36:23.433Z"
+    },
+    {
+      "id": "Pn-JVGgw-cvX82DYqxNLw",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "하준모: 0회 → 55회",
+      "createdAt": "2026-04-25T04:36:05.249Z"
+    },
+    {
+      "id": "H6Rff6DI3Fk35GxYY2mJ0",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이경하: 0회 → 54회",
+      "createdAt": "2026-04-25T04:35:59.097Z"
+    },
+    {
+      "id": "ED6cQ1X7gzCapLm6gkMqL",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "백호열: 1회 → 57회",
+      "createdAt": "2026-04-25T04:35:46.817Z"
+    },
+    {
+      "id": "6aIgGW7rw5GGaTMaoZzwQ",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "여채범: 0회 → 59회",
+      "createdAt": "2026-04-25T04:35:30.145Z"
+    },
+    {
+      "id": "ir8iRoNaMwNdvonMEsBAZ",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "홍설: 0회 → 59회",
+      "createdAt": "2026-04-25T04:35:15.737Z"
+    },
+    {
+      "id": "KMEfW8jyTWwQ7tI5GlT0T",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "박서준: 0회 → 63회",
+      "createdAt": "2026-04-25T04:35:09.057Z"
+    },
+    {
+      "id": "KJd9fxiVG5zIma0jar38R",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "임준선: 0회 → 66회",
+      "createdAt": "2026-04-25T04:34:50.097Z"
+    },
+    {
+      "id": "DbJRYdnz0_K2_2qnRAaqz",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "한가은: 66회 → 67회",
+      "createdAt": "2026-04-25T04:34:32.033Z"
+    },
+    {
+      "id": "thcP8lILUMHWaVh2JyrGL",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 취소",
+      "detail": "att_kh918p_modt390a",
+      "createdAt": "2026-04-25T04:33:45.305Z"
+    },
+    {
+      "id": "14FacVBlgHtlrs3sWsHF8",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 취소",
+      "detail": "att_g12cxd_modt390a",
+      "createdAt": "2026-04-25T04:33:38.434Z"
+    },
+    {
+      "id": "D9Xhb9oBJZGL9iTSUBS9y",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 취소",
+      "detail": "att_p52vcb_modt390a",
+      "createdAt": "2026-04-25T04:33:35.139Z"
+    },
+    {
+      "id": "-BKdM-3hz1x9Yw_PdBEZj",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 취소",
+      "detail": "att_kw4kil_modt390a",
+      "createdAt": "2026-04-25T04:33:32.590Z"
+    },
+    {
+      "id": "qw3lIfnRg5rOjManpLmao",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "한가은: 1회 → 67회",
+      "createdAt": "2026-04-25T04:32:31.985Z"
+    },
+    {
+      "id": "TlFhJGAXwOGMAWb8puR9v",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김세현: 0회 → 77회",
+      "createdAt": "2026-04-25T04:32:19.313Z"
+    },
+    {
+      "id": "wP9PG5C-96akg67SE4EAG",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김도현: 0회 → 106회",
+      "createdAt": "2026-04-25T04:31:43.905Z"
+    },
+    {
+      "id": "jU0aRkmgK4NI2VvwboSnr",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 퇴원",
+      "detail": "배소율",
+      "createdAt": "2026-04-25T04:31:09.178Z"
+    },
+    {
+      "id": "vchLVS7aQUptohLbBRDp7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "남윤재: 1회 → 101회",
+      "createdAt": "2026-04-25T04:31:02.458Z"
+    },
+    {
+      "id": "gOiE43CmIRgdpy_tjmhFW",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이호연: 0회 → 107회",
+      "createdAt": "2026-04-25T04:30:47.226Z"
+    },
+    {
+      "id": "JiPCC6l-fnlWdBhRe34Rg",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "송유건: 0회 → 101회",
+      "createdAt": "2026-04-25T04:30:31.442Z"
+    },
+    {
+      "id": "PUUF1laq24vWolv1hIkal",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "추민준: 0회 → 115회",
+      "createdAt": "2026-04-25T04:30:24.522Z"
+    },
+    {
+      "id": "8i-x1ybh5IecKjpR798vz",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이시예: 1회 → 118회",
+      "createdAt": "2026-04-25T04:30:12.994Z"
+    },
+    {
+      "id": "Epl7fnZgZHthUeLoYTkzq",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "홍철민: 0회 → 117회",
+      "createdAt": "2026-04-25T04:29:52.578Z"
+    },
+    {
+      "id": "hQVwqofOdgtQ-VOiOTK7M",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "장우준: 0회 → 128회",
+      "createdAt": "2026-04-25T04:29:24.826Z"
+    },
+    {
+      "id": "BmzaZqbGhqNE1TVuIf15M",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "정성빈: 0회 → 144회",
+      "createdAt": "2026-04-25T04:28:44.280Z"
+    },
+    {
+      "id": "E4AiqSrpVIDwBF7nUBPGD",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "송유찬: 0회 → 143회",
+      "createdAt": "2026-04-25T04:28:25.946Z"
+    },
+    {
+      "id": "dpOaOadh12Hm2asUHMxi3",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김중현: 0회 → 146회",
+      "createdAt": "2026-04-25T04:27:59.537Z"
+    },
+    {
+      "id": "UAOL6nTs6kOM1RLOrPAFT",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "최서호: 0회 → 159회",
+      "createdAt": "2026-04-25T04:27:31.329Z"
+    },
+    {
+      "id": "dNc1kAUFo4S2Kg24sBTAS",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "박상현: 0회 → 170회",
+      "createdAt": "2026-04-25T04:27:07.401Z"
+    },
+    {
+      "id": "h0YQagmcWnPK_PFSwm9Nn",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김건호: 0회 → 158회",
+      "createdAt": "2026-04-25T04:26:39.145Z"
+    },
+    {
+      "id": "tEwKWkoCaao7Xq2bk_hh5",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이예서: 0회 → 165회",
+      "createdAt": "2026-04-25T04:26:07.047Z"
+    },
+    {
+      "id": "kTrVUiNrVLT-iZhv3-W7G",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "성민찬: 0회 → 166회",
+      "createdAt": "2026-04-25T04:04:49.004Z"
+    },
+    {
+      "id": "WceRmYD4NfeARxSr4U6am",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이예은: 0회 → 168회",
+      "createdAt": "2026-04-25T04:04:27.227Z"
+    },
+    {
+      "id": "sraEshBNnBOnkgHIdEStA",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김하율B: 0회 → 4회",
+      "createdAt": "2026-04-25T04:03:50.043Z"
+    },
+    {
+      "id": "2sHt3yNILdcxD3MA1Y698",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이성준: 0회 → 4회",
+      "createdAt": "2026-04-25T04:03:41.163Z"
+    },
+    {
+      "id": "UiHMHE_G2pIQoZsJ9VOMD",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "박소준: 0회 → 4회",
+      "createdAt": "2026-04-25T04:03:33.404Z"
+    },
+    {
+      "id": "ckK78y8utSZIb0T6BT5Qe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이담비: 0회 → 10회",
+      "createdAt": "2026-04-25T04:03:25.891Z"
+    },
+    {
+      "id": "IB_moB57FPtYiMdSGW_Gu",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김강민: 1회 → 5회",
+      "createdAt": "2026-04-25T04:03:18.222Z"
+    },
+    {
+      "id": "pumj57PHhEtVZu1IzuvTe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "진유나: 0회 → 17회",
+      "createdAt": "2026-04-25T04:03:05.947Z"
+    },
+    {
+      "id": "46pgoNvsHzPYk6ZyFS-Ax",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이신후: 0회 → 12회",
+      "createdAt": "2026-04-25T04:02:54.118Z"
+    },
+    {
+      "id": "Lcw3BiQYQXPHYDhAb9agn",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김상협: 0회 → 16회",
+      "createdAt": "2026-04-25T04:02:46.731Z"
+    },
+    {
+      "id": "v6Y2U6an12WJdYYOCBXY_",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "배찬율: 0회 → 14회",
+      "createdAt": "2026-04-25T04:02:39.099Z"
+    },
+    {
+      "id": "vteTevEmqs8R-Z-jHRZ8_",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "조은찬: 21회 → 15회",
+      "createdAt": "2026-04-25T04:02:29.594Z"
+    },
+    {
+      "id": "2oRIxwcT3l9beMUznnTOC",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "조은찬: 31회 → 21회",
+      "createdAt": "2026-04-25T04:02:25.154Z"
+    },
+    {
+      "id": "Rl_NT97rvNVMyQFubAAOD",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "조은찬: 0회 → 31회",
+      "createdAt": "2026-04-25T04:02:19.435Z"
+    },
+    {
+      "id": "OkvTYOtdcHJM_NwFe6tOe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "오성준: 1회 → 32회",
+      "createdAt": "2026-04-25T04:01:52.846Z"
+    },
+    {
+      "id": "jpuexj1FKNBtLKq8Ojbf7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "문성현: 0회 → 21회",
+      "createdAt": "2026-04-25T04:01:04.281Z"
+    },
+    {
+      "id": "BLLZvZ7AFiTaqbttyOt9V",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "임진서: 0회 → 19회",
+      "createdAt": "2026-04-25T04:00:52.219Z"
+    },
+    {
+      "id": "3dDJ9-b8gFpNW1NJzgNbA",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김윤범: 0회 → 72회",
+      "createdAt": "2026-04-25T04:00:40.027Z"
+    },
+    {
+      "id": "Tj2lqc0BJjVPm21MbMMfO",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "이산: 0회 → 26회",
+      "createdAt": "2026-04-25T04:00:14.947Z"
+    },
+    {
+      "id": "qVCXW1lnTAO5--bO4TJtO",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "회차 수동 수정",
+      "detail": "김승후: 1회 → 3회",
+      "createdAt": "2026-04-25T03:59:35.915Z"
+    },
+    {
+      "id": "i0L2txfdQR56d_aSFOFK6",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "보강 등록",
+      "detail": "2026-04-26",
+      "createdAt": "2026-04-25T03:58:09.340Z"
+    },
+    {
+      "id": "IJZR6vAUU3qA9PSvgYeBR",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa10_buwonjang:2026-04-25",
+      "createdAt": "2026-04-25T03:56:45.979Z"
+    },
+    {
+      "id": "lv0whTHeYX4z4LMIB1doP",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa13_wonjang:2026-04-25",
+      "createdAt": "2026-04-25T03:55:06.973Z"
+    },
+    {
+      "id": "7sEiw-MR0blQkvjCuNzJe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_sa10_youchaemin:2026-04-25",
+      "createdAt": "2026-04-25T03:54:40.855Z"
+    },
+    {
+      "id": "FcCybCyqmV8eJd_QjoGYW",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_youchaemin:stu_ojj3id_modpmsrf",
+      "createdAt": "2026-04-25T02:50:31.289Z"
+    },
+    {
+      "id": "YzVqqOmsa_czdGj_eCZAT",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_buwonjang:stu_55imh4_modqjg4q",
+      "createdAt": "2026-04-25T02:50:20.478Z"
+    },
+    {
+      "id": "rqG--nzueUzzAzl0WFwPw",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_buwonjang:stu_r7as83_modpmsrf",
+      "createdAt": "2026-04-25T02:50:17.011Z"
+    },
+    {
+      "id": "twvmqlUJtFfBWAwzHn0qW",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_buwonjang:stu_yjajpt_modpmsrf",
+      "createdAt": "2026-04-25T02:50:13.383Z"
+    },
+    {
+      "id": "qLkcSDhSesQe6jWdE4yET",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_buwonjang:stu_mto4m5_modpmsre",
+      "createdAt": "2026-04-25T02:50:09.956Z"
+    },
+    {
+      "id": "qp6SmE2dZLb5JTSoNHXuG",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_buwonjang:stu_0ojw7z_modpmsre",
+      "createdAt": "2026-04-25T02:50:06.995Z"
+    },
+    {
+      "id": "Wahn6yfE4AZ_9J_UUEJ3J",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_wonjang:stu_6jni9s_modpmsre",
+      "createdAt": "2026-04-25T02:50:00.354Z"
+    },
+    {
+      "id": "P1JAnCnrv3_H0mHO1RqF4",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa15_wonjang:stu_itvcep_modpmsre",
+      "createdAt": "2026-04-25T02:49:57.676Z"
+    },
+    {
+      "id": "e3HeTYanPAaAIzzER1W3L",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_youchaemin:stu_16mlup_modpmsrf",
+      "createdAt": "2026-04-25T02:49:49.511Z"
+    },
+    {
+      "id": "6ooJ55cCAu-coZ_lFaH2l",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_rup6nu_modpmsre",
+      "createdAt": "2026-04-25T02:49:40.223Z"
+    },
+    {
+      "id": "WKdtQBNXjOuTb1Dva7mJr",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_cjqc8l_modpmsre",
+      "createdAt": "2026-04-25T02:49:35.970Z"
+    },
+    {
+      "id": "UXsOPjAGlBmrzS03ul4kO",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_uyq9j8_modpmsrf",
+      "createdAt": "2026-04-25T02:49:31.239Z"
+    },
+    {
+      "id": "ZUclcGyYCro3rrrWOQae3",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_p0fuec_modpmsre",
+      "createdAt": "2026-04-25T02:49:27.774Z"
+    },
+    {
+      "id": "D0f-E8mcevIrbM0zzUsKH",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_hzu0gf_modpmsre",
+      "createdAt": "2026-04-25T02:49:24.342Z"
+    },
+    {
+      "id": "RcKhXjwiKiQG1ipCH5Qr4",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_0qgyzk_modpmsre",
+      "createdAt": "2026-04-25T02:49:20.922Z"
+    },
+    {
+      "id": "iJmaWr_tBhavhwO6RYcAz",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_buwonjang:stu_mmbjyf_modpmsre",
+      "createdAt": "2026-04-25T02:49:17.467Z"
+    },
+    {
+      "id": "SK1Uf0HrpqfG1_ql9ColF",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_wonjang:stu_kqnto4_modpmsre",
+      "createdAt": "2026-04-25T02:49:00.155Z"
+    },
+    {
+      "id": "UQKNK-pjYkUgx6uvu1jtw",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_wonjang:stu_rzdblg_modqj6ix",
+      "createdAt": "2026-04-25T02:48:57.820Z"
+    },
+    {
+      "id": "xjN8lr3pZJjAOZHEyr_k7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_wonjang:stu_okdrfn_modpmsre",
+      "createdAt": "2026-04-25T02:48:53.926Z"
+    },
+    {
+      "id": "7wpd9Zy1Bpg1XSzBcvL03",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa13_wonjang:stu_1h80lw_modpmsre",
+      "createdAt": "2026-04-25T02:48:51.070Z"
+    },
+    {
+      "id": "bevVvtZcQb-xS0jLgqDrY",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_youchaemin:stu_6r5lah_modpmsrf",
+      "createdAt": "2026-04-25T02:48:37.708Z"
+    },
+    {
+      "id": "oz1wUlmA9gDhCtP8tvt2B",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_ih9zgn_modpmsre",
+      "createdAt": "2026-04-25T02:48:25.202Z"
+    },
+    {
+      "id": "37JQTe394hpK8PoOBt38l",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_dbgjj4_modpmsre",
+      "createdAt": "2026-04-25T02:48:18.851Z"
+    },
+    {
+      "id": "B6e1oLhyU2m4N-hcPbcxj",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_kf1fcj_modpmsre",
+      "createdAt": "2026-04-25T02:48:15.411Z"
+    },
+    {
+      "id": "2smHkw8LYeEim34g2sD38",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_d72h4r_modpmsrf",
+      "createdAt": "2026-04-25T02:48:10.644Z"
+    },
+    {
+      "id": "YqGVW95TZhnEzk-dFSJUF",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_uba0gk_modpmsre",
+      "createdAt": "2026-04-25T02:48:07.250Z"
+    },
+    {
+      "id": "dFo32VXXdGSQADLYAbytC",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_sa10_buwonjang:stu_t72qn1_modpmsre",
+      "createdAt": "2026-04-25T02:48:03.387Z"
+    },
+    {
+      "id": "ETqUw779qQ6Jb9Xvtr8q-",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_wonjang:stu_ougbtd_modpmsrf",
+      "createdAt": "2026-04-25T02:47:53.226Z"
+    },
+    {
+      "id": "wqcfe6XmgLjvIQ7A90_hM",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_wonjang:stu_1gxdns_modpmsrf",
+      "createdAt": "2026-04-25T02:47:50.585Z"
+    },
+    {
+      "id": "lBhvzZKw57IdB_dl1YiRf",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_wonjang:stu_euoxeh_modpmsre",
+      "createdAt": "2026-04-25T02:47:47.857Z"
+    },
+    {
+      "id": "Tfgx1Pf3iceulqp51Y7Q0",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_wonjang:stu_oxjb54_modpmsre",
+      "createdAt": "2026-04-25T02:47:43.709Z"
+    },
+    {
+      "id": "DsMvJ6StD7AR5zHdDFBWL",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_wonjang:stu_7qkmoe_modpmsre",
+      "createdAt": "2026-04-25T02:47:40.612Z"
+    },
+    {
+      "id": "DzRMgDoUThiJSPMVV4iJA",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr19_buwonjang:stu_5obhzc_modpmsrf",
+      "createdAt": "2026-04-25T02:47:30.258Z"
+    },
+    {
+      "id": "vBJw8ENbMTQUFZwpbzV0T",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr19_buwonjang:stu_9bs7or_modpmsre",
+      "createdAt": "2026-04-25T02:47:27.404Z"
+    },
+    {
+      "id": "IQrxl1D5NF-Hp57zXEU34",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr19_buwonjang:stu_92m07h_modpmsre",
+      "createdAt": "2026-04-25T02:47:23.814Z"
+    },
+    {
+      "id": "v6jAFAzNDZRJh7zApt8Yu",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr19_buwonjang:stu_q40pe6_modpmsre",
+      "createdAt": "2026-04-25T02:47:21.249Z"
+    },
+    {
+      "id": "UfQaV7DnazgNXxM1LB4rn",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_buwonjang:stu_b91pbc_modpmsrf",
+      "createdAt": "2026-04-25T02:47:00.657Z"
+    },
+    {
+      "id": "wRBjFxmm7qenh_ybN-u2O",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_buwonjang:stu_qhtevz_modpmsre",
+      "createdAt": "2026-04-25T02:46:57.251Z"
+    },
+    {
+      "id": "8qVnLBEUZOies44UEbstM",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_buwonjang:stu_qc0nw5_modpmsre",
+      "createdAt": "2026-04-25T02:46:53.408Z"
+    },
+    {
+      "id": "NwG-06_e7RkSYyN2HiD8W",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_buwonjang:stu_tdcquk_modpmsre",
+      "createdAt": "2026-04-25T02:46:50.367Z"
+    },
+    {
+      "id": "heCl0dfLKg6WuqEPUva-2",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_fr17_buwonjang:stu_e1en9c_modpmsre",
+      "createdAt": "2026-04-25T02:46:44.548Z"
+    },
+    {
+      "id": "R6pmyUUjS5nZ9MzORI07J",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_tal1yc_modpmsre",
+      "createdAt": "2026-04-25T02:46:14.338Z"
+    },
+    {
+      "id": "CvP5tLy0xYXoy6CZiyxHm",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_hinixt_modpmsre",
+      "createdAt": "2026-04-25T02:46:10.139Z"
+    },
+    {
+      "id": "0EKdcyAtCPQVQyQpD_wu4",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_air5di_modpmsrf",
+      "createdAt": "2026-04-25T02:46:01.009Z"
+    },
+    {
+      "id": "jSA9wuG1jCX77acMNpqUj",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_w0mzno_modpmsre",
+      "createdAt": "2026-04-25T02:45:56.956Z"
+    },
+    {
+      "id": "dslmgVPVYsYOqZE56pYJv",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_csxrw1_modpmsre",
+      "createdAt": "2026-04-25T02:45:53.331Z"
+    },
+    {
+      "id": "gB1BwCp-iIulkQL7YGrsI",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_azgjet_modpmsre",
+      "createdAt": "2026-04-25T02:45:49.005Z"
+    },
+    {
+      "id": "gvEHKwbyrd5XVKbpPlvuc",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th19_buwonjang:stu_kgv17q_modpmsre",
+      "createdAt": "2026-04-25T02:45:45.604Z"
+    },
+    {
+      "id": "sf4hTeZ0dqwJR7va3H6eB",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th17_buwonjang:stu_tuvnln_modpmsrf",
+      "createdAt": "2026-04-25T02:45:31.549Z"
+    },
+    {
+      "id": "RP8KAGM7YsWlLDJAQdVRP",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th17_buwonjang:stu_id2l2t_modpmsre",
+      "createdAt": "2026-04-25T02:45:27.819Z"
+    },
+    {
+      "id": "3obN5VOVeobFxSBS_tbvR",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th17_buwonjang:stu_9esvdq_modpmsre",
+      "createdAt": "2026-04-25T02:45:24.238Z"
+    },
+    {
+      "id": "CSjsF3YZvPNQW7SmReJ3K",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th17_buwonjang:stu_dtnpuk_modpmsre",
+      "createdAt": "2026-04-25T02:45:19.845Z"
+    },
+    {
+      "id": "BMSjCrMdwfZoyi2luidt2",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_th17_buwonjang:stu_bc3b52_modpmsre",
+      "createdAt": "2026-04-25T02:45:14.782Z"
+    },
+    {
+      "id": "K5Fn1uTiU9CeGXf7o1Hox",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s19_buwonjang:stu_c76gc5_modpmsre",
+      "createdAt": "2026-04-25T02:45:03.256Z"
+    },
+    {
+      "id": "A7-7Uk5UubH4bCB_drB0w",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s19_buwonjang:stu_5obhzc_modpmsrf",
+      "createdAt": "2026-04-25T02:44:58.041Z"
+    },
+    {
+      "id": "Um1uY6xby34n4ZNXJ3DsI",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s19_buwonjang:stu_pknkj7_modpmsrf",
+      "createdAt": "2026-04-25T02:44:53.900Z"
+    },
+    {
+      "id": "oEl3hxcLy25m7g5ATkAJI",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s19_buwonjang:stu_rzypzi_modpmsrf",
+      "createdAt": "2026-04-25T02:44:44.759Z"
+    },
+    {
+      "id": "hLmvYKuRPdnpBWD6YFUg1",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s19_buwonjang:stu_1dv714_modpmsre",
+      "createdAt": "2026-04-25T02:44:40.292Z"
+    },
+    {
+      "id": "OibuyWJZ57gdOm6o4s22t",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s17_wonjang:stu_rzdblg_modqj6ix",
+      "createdAt": "2026-04-25T02:44:13.646Z"
+    },
+    {
+      "id": "sVolDZASD_-qJFzQCyikk",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 등록",
+      "detail": "박시환",
+      "createdAt": "2026-04-25T02:43:43.853Z"
+    },
+    {
+      "id": "gMZJD42RBh2JsL8My5Tty",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 등록",
+      "detail": "김승후",
+      "createdAt": "2026-04-25T02:43:31.405Z"
+    },
+    {
+      "id": "0kG82xkJA4NP7b0yFlIHx",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s17_wonjang:stu_twfcj1_modpmsrf",
+      "createdAt": "2026-04-25T02:43:03.284Z"
+    },
+    {
+      "id": "EJiVs8Kuh5Upvym1G5PJI",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_s17_wonjang:stu_dekn8j_modpmsre",
+      "createdAt": "2026-04-25T02:42:59.087Z"
+    },
+    {
+      "id": "WNw3NnlyD2LcyZ-Nl--Ab",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T02:41:34.455Z"
+    },
+    {
+      "id": "NngqQ5PQoesuVBQGNHbTW",
+      "actorId": "vice",
+      "actorName": "부원장계정",
+      "actorRole": "부원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T02:20:44.155Z"
+    },
+    {
+      "id": "pHyT7FNt2pFa3lubLnrYf",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 삭제",
+      "detail": "stu_kimminji",
+      "createdAt": "2026-04-25T02:18:17.131Z"
+    },
+    {
+      "id": "8QGAo3SEQjcy6deMLQ-Xz",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 삭제",
+      "detail": "stu_leedoyun",
+      "createdAt": "2026-04-25T02:18:15.224Z"
+    },
+    {
+      "id": "liiTO-9sl3trYK6RXWmiY",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 삭제",
+      "detail": "class_eng_b",
+      "createdAt": "2026-04-25T02:18:06.637Z"
+    },
+    {
+      "id": "GTgDW-j6irDEDK5RukuQH",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 삭제",
+      "detail": "class_math_a",
+      "createdAt": "2026-04-25T02:18:04.496Z"
+    },
+    {
+      "id": "e2nOKewizRpdI6WlhMQm9",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T02:17:16.431Z"
+    },
+    {
+      "id": "SSiwOqkHfvynDIZXFb7mw",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T02:16:15.396Z"
+    },
+    {
+      "id": "nSo99vjrCYtCzjU8G3YDc",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T02:10:06.508Z"
+    },
+    {
+      "id": "w5lXIvbJ08Nwz3Q876dnA",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "출결 저장",
+      "detail": "class_ls4145_modo8ki2:2026-04-25",
+      "createdAt": "2026-04-25T02:08:19.600Z"
+    },
+    {
+      "id": "5QVlAM7sPbcfxggGmBh9o",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_5qb0ek_modo5aiz:stu_ial94i_mododoaw",
+      "createdAt": "2026-04-25T01:49:22.816Z"
+    },
+    {
+      "id": "wWfBDUKCtMGqsICBIIlKO",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_jbuhiz_modo4rfg:stu_p8yidb_modogu0i",
+      "createdAt": "2026-04-25T01:48:34.217Z"
+    },
+    {
+      "id": "pj-z_sE-oEITDUdiyTPRe",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_jbuhiz_modo4rfg:stu_14d76j_mododoaw",
+      "createdAt": "2026-04-25T01:48:28.910Z"
+    },
+    {
+      "id": "BYYnzToYaRo665aS9gWOa",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_jbuhiz_modo4rfg:stu_bh5zfa_mododoaw",
+      "createdAt": "2026-04-25T01:48:24.929Z"
+    },
+    {
+      "id": "IHxshd_Yvy1vl8qzrRkAw",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_jbuhiz_modo4rfg:stu_zrncot_mododoaw",
+      "createdAt": "2026-04-25T01:48:21.863Z"
+    },
+    {
+      "id": "ZD1EpMs8UKCE6G5M3K6n7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_ls4145_modo8ki2:stu_258tws_mododoax",
+      "createdAt": "2026-04-25T01:48:03.799Z"
+    },
+    {
+      "id": "JN0GJG3dScZVjcAMDRm-z",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_olevw7_modnhmuo:stu_p8yidb_modogu0i",
+      "createdAt": "2026-04-25T01:45:55.160Z"
+    },
+    {
+      "id": "3t4FEa1bZjVAK76-RlMz2",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 등록",
+      "detail": "김승후",
+      "createdAt": "2026-04-25T01:45:42.646Z"
+    },
+    {
+      "id": "MJxv5j6pvCZkHAWU8NWmC",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_olevw7_modnhmuo:stu_t7x4gl_mododoax",
+      "createdAt": "2026-04-25T01:45:00.540Z"
+    },
+    {
+      "id": "cVmzbMyQIZfLl9kHX_HwH",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_olevw7_modnhmuo:stu_r7hqo4_mododoaw",
+      "createdAt": "2026-04-25T01:44:56.438Z"
+    },
+    {
+      "id": "y6vDLJo3f6wTA3V7q8v0t",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "배정 해제",
+      "detail": "enroll_8s5pzv_modof9nd",
+      "createdAt": "2026-04-25T01:44:33.846Z"
+    },
+    {
+      "id": "VYHu7ZOXicXSAWr2MAA7z",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 배정",
+      "detail": "class_olevw7_modnhmuo:stu_r7hqo4_mododoaw",
+      "createdAt": "2026-04-25T01:44:29.598Z"
+    },
+    {
+      "id": "HGu1wmerYTgM3YMEKbvf8",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 삭제",
+      "detail": "class_eng_b",
+      "createdAt": "2026-04-25T01:44:10.287Z"
+    },
+    {
+      "id": "yO9zW5Fn3FKJNuHRRvIjB",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 삭제",
+      "detail": "class_math_a",
+      "createdAt": "2026-04-25T01:44:07.881Z"
+    },
+    {
+      "id": "kBdd_g02t7Vy3rue7glad",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 삭제",
+      "detail": "stu_leedoyun",
+      "createdAt": "2026-04-25T01:44:02.757Z"
+    },
+    {
+      "id": "ckznLhzy9svPhcuPJ7N1i",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "학생 삭제",
+      "detail": "stu_kimminji",
+      "createdAt": "2026-04-25T01:44:00.257Z"
+    },
+    {
+      "id": "bPB8tUh3cC_zBW6Oi6ACy",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토15시유채민",
+      "createdAt": "2026-04-25T01:39:46.133Z"
+    },
+    {
+      "id": "C_MAhhf6HLFvGyPJ1h3mA",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토13시유채민",
+      "createdAt": "2026-04-25T01:39:32.428Z"
+    },
+    {
+      "id": "xdpI52ERtJqKSxGo5MAiL",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토10시유채민",
+      "createdAt": "2026-04-25T01:39:17.069Z"
+    },
+    {
+      "id": "FEN9OWqR3CJDR_uR7cOtG",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토15시부원장",
+      "createdAt": "2026-04-25T01:38:59.300Z"
+    },
+    {
+      "id": "tE4IBPa7mqlisHDkJXbi8",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토13시부원장",
+      "createdAt": "2026-04-25T01:38:41.346Z"
+    },
+    {
+      "id": "YAZ6oNz55lVTG35i9SL1V",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토10시부원장",
+      "createdAt": "2026-04-25T01:37:32.824Z"
+    },
+    {
+      "id": "BGLvIoAb1ftHBTbQZl3tZ",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토15시원장",
+      "createdAt": "2026-04-25T01:36:44.174Z"
+    },
+    {
+      "id": "i-3eeHzPbfsIRp143nvWg",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토13시원장",
+      "createdAt": "2026-04-25T01:36:19.423Z"
+    },
+    {
+      "id": "7vGNG6PiPKsoE9Hvoj574",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "토10시원장",
+      "createdAt": "2026-04-25T01:35:58.117Z"
+    },
+    {
+      "id": "nJeApkc_MhSazinAVWlow",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "금19시부원장",
+      "createdAt": "2026-04-25T01:35:40.497Z"
+    },
+    {
+      "id": "HybjqFTXa0mXNQcCkiQNU",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "금17시부원장",
+      "createdAt": "2026-04-25T01:35:24.033Z"
+    },
+    {
+      "id": "mM3DFJk21DaAo12SUtVc7",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "금17시원장",
+      "createdAt": "2026-04-25T01:35:01.485Z"
+    },
+    {
+      "id": "Tinr0lBfF91ZunBe47A6N",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 수정",
+      "detail": "목19시부원장",
+      "createdAt": "2026-04-25T01:31:19.851Z"
+    },
+    {
+      "id": "1gx5zKDA9Y3Z69ILH0mKN",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "목19부원장",
+      "createdAt": "2026-04-25T01:31:12.496Z"
+    },
+    {
+      "id": "XNsxvkdfFHoTfCUitCGaT",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "목17시부원장",
+      "createdAt": "2026-04-25T01:22:23.364Z"
+    },
+    {
+      "id": "D1DjIzEKoQH6M-tK4mK0n",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "수19시부원장",
+      "createdAt": "2026-04-25T01:21:57.977Z"
+    },
+    {
+      "id": "mfWL-P5qHOmuDa23lT0ON",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 수정",
+      "detail": "수17시원장",
+      "createdAt": "2026-04-25T01:21:32.210Z"
+    },
+    {
+      "id": "G02PDRpoGgU8n9fRi8out",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "수업 등록",
+      "detail": "수17시",
+      "createdAt": "2026-04-25T01:18:20.405Z"
+    },
+    {
+      "id": "CiY0fTTmRFNlMtrefkM2d",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T01:12:17.489Z"
+    },
+    {
+      "id": "5u4bNYkpz8Hx4oGtzdVXI",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-25T01:09:12.721Z"
+    },
+    {
+      "id": "JtrdUMeKbq6O2fzY83hsJ",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-18T07:52:30.255Z"
+    },
+    {
+      "id": "_MAZgS6BEj4VkA00mnuOx",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-18T07:52:24.856Z"
+    },
+    {
+      "id": "jfV4JBGf4DrG6SuU5YP7_",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-18T07:51:50.169Z"
+    },
+    {
+      "id": "uONG_2BUHOXFcLpvlTbzS",
+      "actorId": "admin",
+      "actorName": "원장계정",
+      "actorRole": "원장",
+      "action": "로그인",
+      "detail": "서버 인증 로그인",
+      "createdAt": "2026-04-18T07:50:37.165Z"
+    }
+  ],
+  "academyDb": {
+    "students": [
+      {
+        "id": "stu_55imh4_modqjg4q",
+        "name": "박시환",
+        "phone": "",
+        "grade": "중1",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01031250331",
+        "address": "",
+        "memo": "",
+        "isWithdrawn": false,
+        "withdrawnAt": "",
+        "createdAt": "2026-04-25T02:43:43.850Z"
+      },
+      {
+        "id": "stu_rzdblg_modqj6ix",
+        "name": "김승후",
+        "phone": "",
+        "grade": "5",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01024569315",
+        "address": "",
+        "memo": "",
+        "isWithdrawn": false,
+        "withdrawnAt": "",
+        "createdAt": "2026-04-25T02:43:31.401Z",
+        "sessionOffset": 2
+      },
+      {
+        "id": "stu_q40pe6_modpmsre",
+        "name": "이예은",
+        "phone": "",
+        "grade": "중2",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01063460443",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 168
+      },
+      {
+        "id": "stu_0ojw7z_modpmsre",
+        "name": "성민찬",
+        "phone": "",
+        "grade": "중2",
+        "school": "동중",
+        "guardianName": "",
+        "guardianPhone": "01064445500",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 166
+      },
+      {
+        "id": "stu_92m07h_modpmsre",
+        "name": "이예서",
+        "phone": "",
+        "grade": "6",
+        "school": "불무초",
+        "guardianName": "",
+        "guardianPhone": "01063460443",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 165
+      },
+      {
+        "id": "stu_6jni9s_modpmsre",
+        "name": "김건호",
+        "phone": "",
+        "grade": "중3",
+        "school": "환서중",
+        "guardianName": "",
+        "guardianPhone": "01088222934",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 158
+      },
+      {
+        "id": "stu_e1en9c_modpmsre",
+        "name": "박상현",
+        "phone": "",
+        "grade": "고1",
+        "school": "천안고",
+        "guardianName": "",
+        "guardianPhone": "01024477882",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 170
+      },
+      {
+        "id": "stu_tdcquk_modpmsre",
+        "name": "최서호",
+        "phone": "",
+        "grade": "고2",
+        "school": "불당고",
+        "guardianName": "",
+        "guardianPhone": "01088219179",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 159
+      },
+      {
+        "id": "stu_mmbjyf_modpmsre",
+        "name": "김중현",
+        "phone": "",
+        "grade": "중1",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01040469318",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 146
+      },
+      {
+        "id": "stu_9bs7or_modpmsre",
+        "name": "송유찬",
+        "phone": "",
+        "grade": "중3",
+        "school": "쌍용중",
+        "guardianName": "",
+        "guardianPhone": "01068140719",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 143
+      },
+      {
+        "id": "stu_7qkmoe_modpmsre",
+        "name": "정성빈",
+        "phone": "",
+        "grade": "5",
+        "school": "불무초",
+        "guardianName": "",
+        "guardianPhone": "01071927983",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 144
+      },
+      {
+        "id": "stu_kgv17q_modpmsre",
+        "name": "장우준",
+        "phone": "",
+        "grade": "중3",
+        "school": "가온중",
+        "guardianName": "",
+        "guardianPhone": "01031352513",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 128
+      },
+      {
+        "id": "stu_mto4m5_modpmsre",
+        "name": "홍철민",
+        "phone": "",
+        "grade": "중1",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01091858294",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 117
+      },
+      {
+        "id": "stu_t72qn1_modpmsre",
+        "name": "이시예",
+        "phone": "",
+        "grade": "중1",
+        "school": "",
+        "guardianName": "",
+        "guardianPhone": "01094707202",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 117
+      },
+      {
+        "id": "stu_bc3b52_modpmsre",
+        "name": "추민준",
+        "phone": "",
+        "grade": "6",
+        "school": "불무초",
+        "guardianName": "",
+        "guardianPhone": "01054660008",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 115
+      },
+      {
+        "id": "stu_0qgyzk_modpmsre",
+        "name": "송유건",
+        "phone": "",
+        "grade": "고1",
+        "school": "오성고",
+        "guardianName": "",
+        "guardianPhone": "01036245616",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 101
+      },
+      {
+        "id": "stu_1dv714_modpmsre",
+        "name": "이호연",
+        "phone": "",
+        "grade": "중1",
+        "school": "환서중",
+        "guardianName": "",
+        "guardianPhone": "01094119626",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 107
+      },
+      {
+        "id": "stu_1h80lw_modpmsre",
+        "name": "남윤재",
+        "phone": "",
+        "grade": "중1",
+        "school": "탕정중",
+        "guardianName": "",
+        "guardianPhone": "01068667327",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 100
+      },
+      {
+        "id": "stu_10xzeq_modpmsre",
+        "name": "배소율",
+        "phone": "",
+        "grade": "중1",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01075880178",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "isWithdrawn": true,
+        "withdrawnAt": "2026-04-25"
+      },
+      {
+        "id": "stu_hzu0gf_modpmsre",
+        "name": "김도현",
+        "phone": "",
+        "grade": "중1",
+        "school": "",
+        "guardianName": "",
+        "guardianPhone": "01030158039",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 106
+      },
+      {
+        "id": "stu_qc0nw5_modpmsre",
+        "name": "김세현",
+        "phone": "",
+        "grade": "중1",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01038298038",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 77
+      },
+      {
+        "id": "stu_okdrfn_modpmsre",
+        "name": "한가은",
+        "phone": "",
+        "grade": "중1",
+        "school": "탕정중",
+        "guardianName": "",
+        "guardianPhone": "01082168997",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 67
+      },
+      {
+        "id": "stu_cjqc8l_modpmsre",
+        "name": "임준선",
+        "phone": "",
+        "grade": "중2",
+        "school": "설화중",
+        "guardianName": "",
+        "guardianPhone": "01031935279",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 66
+      },
+      {
+        "id": "stu_p0fuec_modpmsre",
+        "name": "박서준",
+        "phone": "",
+        "grade": "중3",
+        "school": "신방중",
+        "guardianName": "",
+        "guardianPhone": "01093659152",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 63
+      },
+      {
+        "id": "stu_kqnto4_modpmsre",
+        "name": "홍설",
+        "phone": "",
+        "grade": "4",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01040003547",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 59
+      },
+      {
+        "id": "stu_tal1yc_modpmsre",
+        "name": "여채범",
+        "phone": "",
+        "grade": "6",
+        "school": "탕정미래초",
+        "guardianName": "",
+        "guardianPhone": "01095374284",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 59
+      },
+      {
+        "id": "stu_uba0gk_modpmsre",
+        "name": "백호열",
+        "phone": "",
+        "grade": "중3",
+        "school": "배방중",
+        "guardianName": "",
+        "guardianPhone": "01046349872",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 56
+      },
+      {
+        "id": "stu_hinixt_modpmsre",
+        "name": "이경하",
+        "phone": "",
+        "grade": "중1",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01045714787",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 54
+      },
+      {
+        "id": "stu_oxjb54_modpmsre",
+        "name": "하준모",
+        "phone": "",
+        "grade": "5",
+        "school": "불무초",
+        "guardianName": "",
+        "guardianPhone": "01077063757",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 55
+      },
+      {
+        "id": "stu_c76gc5_modpmsre",
+        "name": "김민준B",
+        "phone": "",
+        "grade": "고2",
+        "school": "불당고",
+        "guardianName": "",
+        "guardianPhone": "01064779116",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 61
+      },
+      {
+        "id": "stu_azgjet_modpmsre",
+        "name": "박준우",
+        "phone": "",
+        "grade": "5",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01040228847",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 120
+      },
+      {
+        "id": "stu_kf1fcj_modpmsre",
+        "name": "정연후",
+        "phone": "",
+        "grade": "중3",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01086209587",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 45
+      },
+      {
+        "id": "stu_itvcep_modpmsre",
+        "name": "이시원",
+        "phone": "",
+        "grade": "3",
+        "school": "불당초",
+        "guardianName": "",
+        "guardianPhone": "01083671055",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 42
+      },
+      {
+        "id": "stu_csxrw1_modpmsre",
+        "name": "이윤섭",
+        "phone": "",
+        "grade": "중2",
+        "school": "설화중",
+        "guardianName": "",
+        "guardianPhone": "01064258117",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 43
+      },
+      {
+        "id": "stu_rup6nu_modpmsre",
+        "name": "염우진",
+        "phone": "",
+        "grade": "중2",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01077467604",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 56
+      },
+      {
+        "id": "stu_dtnpuk_modpmsre",
+        "name": "이윤형",
+        "phone": "",
+        "grade": "5",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01072872959",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 37
+      },
+      {
+        "id": "stu_dekn8j_modpmsre",
+        "name": "김동준",
+        "phone": "",
+        "grade": "4",
+        "school": "불당초",
+        "guardianName": "",
+        "guardianPhone": "01088740369",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 37
+      },
+      {
+        "id": "stu_9esvdq_modpmsre",
+        "name": "권지성",
+        "phone": "",
+        "grade": "중2",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01044887147",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 46
+      },
+      {
+        "id": "stu_id2l2t_modpmsre",
+        "name": "육온유",
+        "phone": "",
+        "grade": "중1",
+        "school": "천성중",
+        "guardianName": "",
+        "guardianPhone": "01046158858",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 29
+      },
+      {
+        "id": "stu_xs56xi_modpmsre",
+        "name": "성유준",
+        "phone": "",
+        "grade": "중2",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01053799160",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 32,
+        "isWithdrawn": true,
+        "withdrawnAt": "2026-04-25"
+      },
+      {
+        "id": "stu_ih9zgn_modpmsre",
+        "name": "이준혁",
+        "phone": "",
+        "grade": "중2",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01064727573",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 31
+      },
+      {
+        "id": "stu_euoxeh_modpmsre",
+        "name": "김유환",
+        "phone": "",
+        "grade": "중1",
+        "school": "",
+        "guardianName": "",
+        "guardianPhone": "01051946535",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 30
+      },
+      {
+        "id": "stu_qhtevz_modpmsre",
+        "name": "백지완",
+        "phone": "",
+        "grade": "중1",
+        "school": "쌍용중",
+        "guardianName": "",
+        "guardianPhone": "01050418082",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 30
+      },
+      {
+        "id": "stu_dbgjj4_modpmsre",
+        "name": "이건우",
+        "phone": "",
+        "grade": "중1",
+        "school": "",
+        "guardianName": "",
+        "guardianPhone": "01056591178",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 26
+      },
+      {
+        "id": "stu_w0mzno_modpmsre",
+        "name": "이상원",
+        "phone": "",
+        "grade": "6",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01020541131",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z",
+        "sessionOffset": 27
+      },
+      {
+        "id": "stu_1gxdns_modpmsrf",
+        "name": "이산",
+        "phone": "",
+        "grade": "4",
+        "school": "불당초",
+        "guardianName": "",
+        "guardianPhone": "01048807479",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 26
+      },
+      {
+        "id": "stu_twfcj1_modpmsrf",
+        "name": "김윤범",
+        "phone": "",
+        "grade": "6",
+        "school": "호수초",
+        "guardianName": "",
+        "guardianPhone": "01095925535",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 72
+      },
+      {
+        "id": "stu_ojj3id_modpmsrf",
+        "name": "임진서",
+        "phone": "",
+        "grade": "중1",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01087705274",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 19
+      },
+      {
+        "id": "stu_ougbtd_modpmsrf",
+        "name": "문성현",
+        "phone": "",
+        "grade": "3",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01042030403",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 21
+      },
+      {
+        "id": "stu_6r5lah_modpmsrf",
+        "name": "오성준",
+        "phone": "",
+        "grade": "3",
+        "school": "",
+        "guardianName": "",
+        "guardianPhone": "01085212448",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 31
+      },
+      {
+        "id": "stu_uyq9j8_modpmsrf",
+        "name": "조은찬",
+        "phone": "",
+        "grade": "6",
+        "school": "한들물빛초",
+        "guardianName": "",
+        "guardianPhone": "01048241021",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 15
+      },
+      {
+        "id": "stu_yjajpt_modpmsrf",
+        "name": "배찬율",
+        "phone": "",
+        "grade": "중2",
+        "school": "설화중",
+        "guardianName": "",
+        "guardianPhone": "01099860325",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 14
+      },
+      {
+        "id": "stu_air5di_modpmsrf",
+        "name": "김상협",
+        "phone": "",
+        "grade": "중1",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01025846528",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 16
+      },
+      {
+        "id": "stu_16mlup_modpmsrf",
+        "name": "이신후",
+        "phone": "",
+        "grade": "중2",
+        "school": "음봉중",
+        "guardianName": "",
+        "guardianPhone": "01056755670",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 12
+      },
+      {
+        "id": "stu_tuvnln_modpmsrf",
+        "name": "진유나",
+        "phone": "",
+        "grade": "중3",
+        "school": "불당중",
+        "guardianName": "",
+        "guardianPhone": "01066518883",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 17
+      },
+      {
+        "id": "stu_d72h4r_modpmsrf",
+        "name": "김강민",
+        "phone": "",
+        "grade": "6",
+        "school": "아름초",
+        "guardianName": "",
+        "guardianPhone": "01074717220",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 4
+      },
+      {
+        "id": "stu_5obhzc_modpmsrf",
+        "name": "이담비",
+        "phone": "",
+        "grade": "중2",
+        "school": "갈산중",
+        "guardianName": "",
+        "guardianPhone": "01090133637",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 10
+      },
+      {
+        "id": "stu_rzypzi_modpmsrf",
+        "name": "박소준",
+        "phone": "",
+        "grade": "중1",
+        "school": "탕정중",
+        "guardianName": "",
+        "guardianPhone": "01092960124",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 4
+      },
+      {
+        "id": "stu_pknkj7_modpmsrf",
+        "name": "이성준",
+        "phone": "",
+        "grade": "중1",
+        "school": "갈산중",
+        "guardianName": "",
+        "guardianPhone": "01072705558",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 4
+      },
+      {
+        "id": "stu_r7as83_modpmsrf",
+        "name": "김하율B",
+        "phone": "",
+        "grade": "중3",
+        "school": "불무중",
+        "guardianName": "",
+        "guardianPhone": "01035392592",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z",
+        "sessionOffset": 4
+      },
+      {
+        "id": "stu_b91pbc_modpmsrf",
+        "name": "최건(5/8~)",
+        "phone": "",
+        "grade": "중2",
+        "school": "성정중",
+        "guardianName": "",
+        "guardianPhone": "01077821215",
+        "address": "",
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.571Z"
+      }
+    ],
+    "classes": [
+      {
+        "id": "class_s17_wonjang",
+        "subject": "수17시원장",
+        "teacher": "원장",
+        "day": "수",
+        "time": "17:00-19:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_s19_buwonjang",
+        "subject": "수19시부원장",
+        "teacher": "부원장",
+        "day": "수",
+        "time": "19:00-21:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_th17_buwonjang",
+        "subject": "목17시부원장",
+        "teacher": "부원장",
+        "day": "목",
+        "time": "17:00-19:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_th19_buwonjang",
+        "subject": "목19시부원장",
+        "teacher": "부원장",
+        "day": "목",
+        "time": "19:00-21:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_fr17_buwonjang",
+        "subject": "금17시부원장",
+        "teacher": "부원장",
+        "day": "금",
+        "time": "17:00-19:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_fr19_buwonjang",
+        "subject": "금19시부원장",
+        "teacher": "부원장",
+        "day": "금",
+        "time": "19:00-21:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_fr17_wonjang",
+        "subject": "금17시원장",
+        "teacher": "원장",
+        "day": "금",
+        "time": "17:00-19:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa10_wonjang",
+        "subject": "토10시원장",
+        "teacher": "원장",
+        "day": "토",
+        "time": "10:00-12:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa10_buwonjang",
+        "subject": "토10시부원장",
+        "teacher": "부원장",
+        "day": "토",
+        "time": "10:00-12:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa10_youchaemin",
+        "subject": "토10시유채민",
+        "teacher": "유채민",
+        "day": "토",
+        "time": "10:00-12:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa13_wonjang",
+        "subject": "토13시원장",
+        "teacher": "원장",
+        "day": "토",
+        "time": "13:00-15:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa13_buwonjang",
+        "subject": "토13시부원장",
+        "teacher": "부원장",
+        "day": "토",
+        "time": "13:00-15:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa13_youchaemin",
+        "subject": "토13시유채민",
+        "teacher": "유채민",
+        "day": "토",
+        "time": "13:00-15:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa15_wonjang",
+        "subject": "토15시원장",
+        "teacher": "원장",
+        "day": "토",
+        "time": "15:00-17:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa15_buwonjang",
+        "subject": "토15시부원장",
+        "teacher": "부원장",
+        "day": "토",
+        "time": "15:00-17:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      },
+      {
+        "id": "class_sa15_youchaemin",
+        "subject": "토15시유채민",
+        "teacher": "유채민",
+        "day": "토",
+        "time": "15:00-17:00",
+        "room": "",
+        "capacity": 7,
+        "memo": "",
+        "createdAt": "2026-04-25T02:18:20.570Z"
+      }
+    ],
+    "enrollments": [
+      {
+        "id": "enroll_mderjt_modqs6ie",
+        "classId": "class_sa15_youchaemin",
+        "studentId": "stu_ojj3id_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:31.286Z"
+      },
+      {
+        "id": "enroll_0fd0b0_modqry64",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_55imh4_modqjg4q",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:20.476Z"
+      },
+      {
+        "id": "enroll_i8sf9z_modqrvhu",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_r7as83_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:17.010Z"
+      },
+      {
+        "id": "enroll_cgk4h6_modqrsp0",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_yjajpt_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:13.380Z"
+      },
+      {
+        "id": "enroll_ttqd20_modqrq1v",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_mto4m5_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:09.955Z"
+      },
+      {
+        "id": "enroll_1xixg4_modqrnrl",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_0ojw7z_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:06.993Z"
+      },
+      {
+        "id": "enroll_gkacz0_modqrin5",
+        "classId": "class_sa15_wonjang",
+        "studentId": "stu_6jni9s_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:50:00.353Z"
+      },
+      {
+        "id": "enroll_k31dhi_modqrgkp",
+        "classId": "class_sa15_wonjang",
+        "studentId": "stu_itvcep_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:57.673Z"
+      },
+      {
+        "id": "enroll_j75464_modqra9w",
+        "classId": "class_sa13_youchaemin",
+        "studentId": "stu_16mlup_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:49.508Z"
+      },
+      {
+        "id": "enroll_4h2ara_modqr33w",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_rup6nu_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:40.220Z"
+      },
+      {
+        "id": "enroll_ajoeks_modqqztt",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_cjqc8l_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:35.969Z"
+      },
+      {
+        "id": "enroll_xe28au_modqqw6d",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_uyq9j8_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:31.237Z"
+      },
+      {
+        "id": "enroll_qsserr_modqqti5",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_p0fuec_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:27.773Z"
+      },
+      {
+        "id": "enroll_oftwk8_modqqqur",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_hzu0gf_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:24.339Z"
+      },
+      {
+        "id": "enroll_ugiik2_modqqo7s",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_0qgyzk_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:20.920Z"
+      },
+      {
+        "id": "enroll_44jpgc_modqqljq",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_mmbjyf_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:17.462Z"
+      },
+      {
+        "id": "enroll_pxidnf_modqq86w",
+        "classId": "class_sa13_wonjang",
+        "studentId": "stu_kqnto4_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:49:00.152Z"
+      },
+      {
+        "id": "enroll_r6lub9_modqq6e1",
+        "classId": "class_sa13_wonjang",
+        "studentId": "stu_rzdblg_modqj6ix",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:57.817Z"
+      },
+      {
+        "id": "enroll_9mqxh4_modqq3dw",
+        "classId": "class_sa13_wonjang",
+        "studentId": "stu_okdrfn_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:53.924Z"
+      },
+      {
+        "id": "enroll_tka7eg_modqq16i",
+        "classId": "class_sa13_wonjang",
+        "studentId": "stu_1h80lw_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:51.066Z"
+      },
+      {
+        "id": "enroll_c5y6xm_modqpqvd",
+        "classId": "class_sa10_youchaemin",
+        "studentId": "stu_6r5lah_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:37.705Z"
+      },
+      {
+        "id": "enroll_2i6gkd_modqph7y",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_ih9zgn_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:25.198Z"
+      },
+      {
+        "id": "enroll_f4a02h_modqpcbk",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_dbgjj4_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:18.848Z"
+      },
+      {
+        "id": "enroll_x43zx2_modqp9o1",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_kf1fcj_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:15.409Z"
+      },
+      {
+        "id": "enroll_9eqhtp_modqp5zl",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_d72h4r_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:10.641Z"
+      },
+      {
+        "id": "enroll_o4w9lz_modqp3dc",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_uba0gk_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:07.248Z"
+      },
+      {
+        "id": "enroll_ytg0yp_modqp0e0",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_t72qn1_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:48:03.384Z"
+      },
+      {
+        "id": "enroll_uswqmt_modqosjr",
+        "classId": "class_fr17_wonjang",
+        "studentId": "stu_ougbtd_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:53.223Z"
+      },
+      {
+        "id": "enroll_88yoto_modqoqif",
+        "classId": "class_fr17_wonjang",
+        "studentId": "stu_1gxdns_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:50.583Z"
+      },
+      {
+        "id": "enroll_f5kbsl_modqooem",
+        "classId": "class_fr17_wonjang",
+        "studentId": "stu_euoxeh_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:47.854Z"
+      },
+      {
+        "id": "enroll_0onljd_modqol7f",
+        "classId": "class_fr17_wonjang",
+        "studentId": "stu_oxjb54_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:43.707Z"
+      },
+      {
+        "id": "enroll_56245o_modqoitc",
+        "classId": "class_fr17_wonjang",
+        "studentId": "stu_7qkmoe_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:40.608Z"
+      },
+      {
+        "id": "enroll_0ocrrp_modqoats",
+        "classId": "class_fr19_buwonjang",
+        "studentId": "stu_5obhzc_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:30.256Z"
+      },
+      {
+        "id": "enroll_5cfaw9_modqo8mh",
+        "classId": "class_fr19_buwonjang",
+        "studentId": "stu_9bs7or_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:27.401Z"
+      },
+      {
+        "id": "enroll_d5f66j_modqo5us",
+        "classId": "class_fr19_buwonjang",
+        "studentId": "stu_92m07h_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:23.812Z"
+      },
+      {
+        "id": "enroll_iqndu1_modqo3vi",
+        "classId": "class_fr19_buwonjang",
+        "studentId": "stu_q40pe6_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:21.246Z"
+      },
+      {
+        "id": "enroll_gkpg8i_modqnnzj",
+        "classId": "class_fr17_buwonjang",
+        "studentId": "stu_b91pbc_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:47:00.655Z"
+      },
+      {
+        "id": "enroll_90xutt_modqnlcw",
+        "classId": "class_fr17_buwonjang",
+        "studentId": "stu_qhtevz_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:57.248Z"
+      },
+      {
+        "id": "enroll_lx05ox_modqnie6",
+        "classId": "class_fr17_buwonjang",
+        "studentId": "stu_qc0nw5_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:53.406Z"
+      },
+      {
+        "id": "enroll_sdb31x_modqng1o",
+        "classId": "class_fr17_buwonjang",
+        "studentId": "stu_tdcquk_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:50.364Z"
+      },
+      {
+        "id": "enroll_eoz6e8_modqnbk1",
+        "classId": "class_fr17_buwonjang",
+        "studentId": "stu_e1en9c_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:44.545Z"
+      },
+      {
+        "id": "enroll_erppka_modqmo8w",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_tal1yc_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:14.336Z"
+      },
+      {
+        "id": "enroll_lfr86b_modqml07",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_hinixt_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:10.135Z"
+      },
+      {
+        "id": "enroll_0xu97o_modqmdym",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_air5di_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:46:01.006Z"
+      },
+      {
+        "id": "enroll_b3juax_modqmau2",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_w0mzno_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:56.954Z"
+      },
+      {
+        "id": "enroll_hd8g6r_modqm81b",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_csxrw1_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:53.327Z"
+      },
+      {
+        "id": "enroll_rbquh4_modqm4p7",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_azgjet_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:49.003Z"
+      },
+      {
+        "id": "enroll_ihi7p5_modqm22o",
+        "classId": "class_th19_buwonjang",
+        "studentId": "stu_kgv17q_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:45.600Z"
+      },
+      {
+        "id": "enroll_5s0m94_modqlr8b",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_tuvnln_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:31.547Z"
+      },
+      {
+        "id": "enroll_3zmofv_modqloco",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_id2l2t_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:27.816Z"
+      },
+      {
+        "id": "enroll_0chc23_modqlll8",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_9esvdq_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:24.236Z"
+      },
+      {
+        "id": "enroll_ny3ea8_modqli76",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_dtnpuk_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:19.842Z"
+      },
+      {
+        "id": "enroll_rxotl6_modqleai",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_bc3b52_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:14.778Z"
+      },
+      {
+        "id": "enroll_g6r99p_modql5ed",
+        "classId": "class_s19_buwonjang",
+        "studentId": "stu_c76gc5_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:45:03.253Z"
+      },
+      {
+        "id": "enroll_02q2l7_modql1dj",
+        "classId": "class_s19_buwonjang",
+        "studentId": "stu_5obhzc_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:44:58.039Z"
+      },
+      {
+        "id": "enroll_e3a8yw_modqky6h",
+        "classId": "class_s19_buwonjang",
+        "studentId": "stu_pknkj7_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:44:53.897Z"
+      },
+      {
+        "id": "enroll_ousyr5_modqkr4m",
+        "classId": "class_s19_buwonjang",
+        "studentId": "stu_rzypzi_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:44:44.758Z"
+      },
+      {
+        "id": "enroll_x3ln3i_modqknoh",
+        "classId": "class_s19_buwonjang",
+        "studentId": "stu_1dv714_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:44:40.289Z"
+      },
+      {
+        "id": "enroll_g2v1ky_modqk34b",
+        "classId": "class_s17_wonjang",
+        "studentId": "stu_rzdblg_modqj6ix",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:44:13.643Z"
+      },
+      {
+        "id": "enroll_jz7tst_modqiktu",
+        "classId": "class_s17_wonjang",
+        "studentId": "stu_twfcj1_modpmsrf",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:43:03.282Z"
+      },
+      {
+        "id": "enroll_7mm11b_modqihl7",
+        "classId": "class_s17_wonjang",
+        "studentId": "stu_dekn8j_modpmsre",
+        "startDate": "2026-04-25",
+        "endDate": "",
+        "createdAt": "2026-04-25T02:42:59.083Z"
+      }
+    ],
+    "attendances": [
+      {
+        "id": "att_etbk0e_moe0k1n8",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_youchaemin",
+        "studentId": "stu_ojj3id_modpmsrf",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T07:24:07.892Z"
+      },
+      {
+        "id": "att_x8nn22_moe0jq9t",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_wonjang",
+        "studentId": "stu_itvcep_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T07:23:53.153Z"
+      },
+      {
+        "id": "att_98m667_modybopo",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_0ojw7z_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T06:21:38.652Z"
+      },
+      {
+        "id": "att_ue0teg_modybopo",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_mto4m5_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T06:21:38.652Z"
+      },
+      {
+        "id": "att_hlbpn5_modybopo",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_yjajpt_modpmsrf",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T06:21:38.652Z"
+      },
+      {
+        "id": "att_jhvgpf_modybopo",
+        "date": "2026-04-25",
+        "time": "15:00",
+        "classId": "class_sa15_buwonjang",
+        "studentId": "stu_r7as83_modpmsrf",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T06:21:38.652Z"
+      },
+      {
+        "id": "att_5oro0v_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_mmbjyf_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_1i3lcz_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_0qgyzk_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_nnpzk5_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_hzu0gf_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_siu2gc_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_p0fuec_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_qk9kgb_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_uyq9j8_modpmsrf",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_1bb2lt_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_cjqc8l_modpmsre",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_ypow1c_modwstyu",
+        "date": "2026-04-25",
+        "time": "13:00",
+        "classId": "class_sa13_buwonjang",
+        "studentId": "stu_rup6nu_modpmsre",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T05:38:59.382Z"
+      },
+      {
+        "id": "att_wwdbal_modwq3md",
+        "date": "2026-04-25",
+        "time": "17:00",
+        "classId": "class_th17_buwonjang",
+        "studentId": "stu_id2l2t_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "4/25 10시 보강",
+        "createdAt": "2026-04-25T05:36:51.925Z"
+      },
+      {
+        "id": "att_xxvalw_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_t72qn1_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_mxo12t_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_uba0gk_modpmsre",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_3btdsg_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_d72h4r_modpmsrf",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_tkjoco_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_kf1fcj_modpmsre",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_z0zke3_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_dbgjj4_modpmsre",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_ricixi_modt5def",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_buwonjang",
+        "studentId": "stu_ih9zgn_modpmsre",
+        "status": "결석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:56:45.975Z"
+      },
+      {
+        "id": "att_ajca6g_modt2our",
+        "date": "2026-04-25",
+        "time": "10:00",
+        "classId": "class_sa10_youchaemin",
+        "studentId": "stu_6r5lah_modpmsrf",
+        "status": "출석",
+        "type": "정규",
+        "memo": "",
+        "createdAt": "2026-04-25T03:54:40.851Z"
+      }
+    ],
+    "grades": [],
+    "payments": [],
+    "counsels": [],
+    "notes": [
+      {
+        "id": "note_1",
+        "date": "2026-04-16",
+        "content": "중간고사 대비 자습실 운영시간 22시까지 연장",
+        "createdAt": "2026-04-16T09:00:00.000Z"
+      },
+      {
+        "id": "note_2",
+        "date": "2026-04-17",
+        "content": "다음 주 학부모 간담회 일정 공지 필요",
+        "createdAt": "2026-04-17T09:10:00.000Z"
+      }
+    ],
+    "makeups": [
+      {
+        "id": "makeup_zu953d_modz36aa",
+        "studentId": "stu_yjajpt_modpmsrf",
+        "classId": "class_th19_buwonjang",
+        "absentAttendanceId": "att_hlbpn5_modybopo",
+        "scheduledDate": "2026-04-30",
+        "status": "예정",
+        "attended": false,
+        "memo": "19시",
+        "createdAt": "2026-04-25T06:43:01.138Z"
+      }
+    ]
+  }
+}

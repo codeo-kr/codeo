@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import './App.css'
 
@@ -12,9 +12,10 @@ type MenuKey =
   | 'counsels'
   | 'notes'
   | 'audit'
+  | 'changeHistory'
   | 'studentDetail'
 
-type UserRole = '원장' | '강사' | '상담'
+type UserRole = '원장' | '부원장' | '강사' | '상담'
 
 type AuthUser = {
   id: string
@@ -32,6 +33,29 @@ type AuditLog = {
   createdAt: string
 }
 
+type DataChangeEntry = {
+  field: string
+  before: string
+  after: string
+}
+
+type DataChangeType = '추가' | '수정' | '삭제'
+
+type DataChangeLog = {
+  id: string
+  actorId: string
+  actorName: string
+  actorRole: UserRole
+  action: string
+  detail: string
+  entityType: string
+  entityId: string
+  entityLabel: string
+  changeType: DataChangeType
+  changes: DataChangeEntry[]
+  createdAt: string
+}
+
 type Student = {
   id: string
   name: string
@@ -45,6 +69,7 @@ type Student = {
   isWithdrawn?: boolean
   withdrawnAt?: string
   createdAt: string
+  sessionOffset?: number
 }
 
 type AcademyClass = {
@@ -144,19 +169,77 @@ type DB = {
   makeups: Makeup[]
 }
 
+type DBCollectionKey = keyof DB
+
 type AttendanceDraft = {
-  status: AttendanceStatus
+  status: AttendanceStatus | ''
   memo: string
   createMakeup: boolean
   makeupDate: string
+}
+
+type TimetableEntry = {
+  classId: string
+  subject: string
+  teacher: string
+  time: string
+  students: string[]
+  sessionType: '정규' | '보강'
+}
+
+type SearchableOption = {
+  value: string
+  label: string
+  searchText?: string
 }
 
 const STORAGE_KEY = 'academy_admin_db_v1'
 const AUTH_KEY = 'academy_admin_auth_v1'
 const AUTH_TOKEN_KEY = 'academy_admin_auth_token_v1'
 const AUDIT_KEY = 'academy_admin_audit_v1'
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+const CHANGE_LOG_KEY = 'academy_admin_change_log_v1'
+const DB_COLLECTION_KEYS: DBCollectionKey[] = ['students', 'classes', 'enrollments', 'attendances', 'grades', 'payments', 'counsels', 'notes', 'makeups']
+const COLLECTION_LABELS: Record<DBCollectionKey, string> = {
+  students: '학생',
+  classes: '수업',
+  enrollments: '수강 배정',
+  attendances: '출결',
+  grades: '성적',
+  payments: '납부',
+  counsels: '상담',
+  notes: '공지/메모',
+  makeups: '보강',
+}
+const API_BASE_URL = (() => {
+  const envBase = (import.meta.env.VITE_API_BASE_URL ?? '').trim()
+  if (envBase) {
+    return envBase.replace(/\/$/, '')
+  }
+
+  if (typeof window !== 'undefined') {
+    const { protocol, hostname } = window.location
+    // 개발 환경: 같은 호스트의 4000 포트를 API 서버로 사용
+    return `${protocol}//${hostname}:4000`
+  }
+
+  return ''
+})()
 const DEDUCT_STATUSES: AttendanceStatus[] = ['출석', '지각', '결석', '조퇴']
+const WEEK_DAYS = ['월', '화', '수', '목', '금', '토', '일'] as const
+const PAYMENT_STATUS_OPTIONS: SearchableOption[] = [
+  { value: '완납', label: '완납' },
+  { value: '미납', label: '미납' },
+]
+const ATTENDANCE_HISTORY_STATUS_OPTIONS: SearchableOption[] = [
+  { value: '출석', label: '출석' },
+  { value: '지각', label: '지각' },
+  { value: '결석', label: '결석' },
+  { value: '조퇴', label: '조퇴' },
+]
+const STUDENT_SORT_OPTIONS: SearchableOption[] = [
+  { value: 'createdAt', label: '최신 등록순' },
+  { value: 'name', label: '이름순' },
+]
 const CLASS_DAY_OPTIONS = [
   '월',
   '화',
@@ -176,7 +259,8 @@ const HOUR_TIME_OPTIONS = Array.from({ length: 18 }, (_, i) => `${String(i + 6).
 const today = new Date().toISOString().slice(0, 10)
 
 const ROLE_MENU_ACCESS: Record<UserRole, MenuKey[]> = {
-  원장: ['dashboard', 'students', 'classes', 'attendance', 'grades', 'payments', 'counsels', 'notes', 'audit', 'studentDetail'],
+  원장: ['dashboard', 'students', 'classes', 'attendance', 'grades', 'payments', 'counsels', 'notes', 'audit', 'changeHistory', 'studentDetail'],
+  부원장: ['dashboard', 'students', 'classes', 'attendance', 'grades', 'payments', 'counsels', 'notes', 'audit', 'changeHistory', 'studentDetail'],
   강사: ['dashboard', 'students', 'classes', 'attendance', 'grades', 'notes', 'studentDetail'],
   상담: ['dashboard', 'students', 'payments', 'counsels', 'notes', 'studentDetail'],
 }
@@ -187,6 +271,337 @@ function uid(prefix: string) {
 
 function byRecent<T extends { createdAt: string }>(list: T[]) {
   return [...list].sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
+}
+
+function summarizeValue(value: unknown): string {
+  if (value === null || value === undefined || value === '') return '-'
+  if (typeof value === 'boolean') return value ? '예' : '아니오'
+  if (Array.isArray(value)) return value.map((item) => summarizeValue(item)).join(', ')
+  if (typeof value === 'object') return JSON.stringify(value)
+  return String(value)
+}
+
+function resolveEntityLabel(collection: DBCollectionKey, item: Record<string, unknown>, db: DB): string {
+  const studentsById = new Map(db.students.map((student) => [student.id, student]))
+  const classesById = new Map(db.classes.map((academyClass) => [academyClass.id, academyClass]))
+
+  switch (collection) {
+    case 'students':
+      return summarizeValue(item.name)
+    case 'classes':
+      return summarizeValue(item.subject)
+    case 'enrollments': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      const className = classesById.get(String(item.classId ?? ''))?.subject ?? '삭제된 수업'
+      return `${studentName} / ${className}`
+    }
+    case 'attendances': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      const className = classesById.get(String(item.classId ?? ''))?.subject ?? '삭제된 수업'
+      return `${summarizeValue(item.date)} ${summarizeValue(item.time)} / ${studentName} / ${className}`
+    }
+    case 'grades': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      return `${studentName} / ${summarizeValue(item.subject)}`
+    }
+    case 'payments': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      return `${studentName} / ${summarizeValue(item.month)}`
+    }
+    case 'counsels': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      return `${studentName} / ${summarizeValue(item.date)}`
+    }
+    case 'notes':
+      return summarizeValue(item.content).slice(0, 40)
+    case 'makeups': {
+      const studentName = studentsById.get(String(item.studentId ?? ''))?.name ?? '삭제된 학생'
+      const className = classesById.get(String(item.classId ?? ''))?.subject ?? '삭제된 수업'
+      return `${studentName} / ${className} / ${summarizeValue(item.scheduledDate)}`
+    }
+    default:
+      return summarizeValue(item.id)
+  }
+}
+
+function buildChangeEntries(previousItem: Record<string, unknown> | null, nextItem: Record<string, unknown> | null, changeType: DataChangeType) {
+  const fieldSet = new Set<string>()
+
+  if (previousItem) {
+    Object.keys(previousItem).forEach((field) => {
+      if (field !== 'id' && field !== 'createdAt') fieldSet.add(field)
+    })
+  }
+
+  if (nextItem) {
+    Object.keys(nextItem).forEach((field) => {
+      if (field !== 'id' && field !== 'createdAt') fieldSet.add(field)
+    })
+  }
+
+  const entries = [...fieldSet].flatMap((field) => {
+    const beforeValue = previousItem?.[field]
+    const afterValue = nextItem?.[field]
+
+    if (changeType === '수정' && JSON.stringify(beforeValue) === JSON.stringify(afterValue)) {
+      return [] as DataChangeEntry[]
+    }
+
+    return [{
+      field,
+      before: summarizeValue(beforeValue),
+      after: summarizeValue(afterValue),
+    }]
+  })
+
+  return entries
+}
+
+function buildDataChangeLogs(previousDb: DB, nextDb: DB, actor: AuthUser | null, action: string, detail: string) {
+  if (!actor) return [] as DataChangeLog[]
+
+  const createdAt = new Date().toISOString()
+  const logs: DataChangeLog[] = []
+
+  DB_COLLECTION_KEYS.forEach((collection) => {
+    const previousItems = previousDb[collection] as Array<Record<string, unknown>>
+    const nextItems = nextDb[collection] as Array<Record<string, unknown>>
+    const previousMap = new Map(previousItems.map((item) => [String(item.id), item]))
+    const nextMap = new Map(nextItems.map((item) => [String(item.id), item]))
+
+    nextMap.forEach((nextItem, itemId) => {
+      const previousItem = previousMap.get(itemId)
+      if (!previousItem) {
+        logs.push({
+          id: uid('change'),
+          actorId: actor.id,
+          actorName: actor.name,
+          actorRole: actor.role,
+          action,
+          detail,
+          entityType: COLLECTION_LABELS[collection],
+          entityId: itemId,
+          entityLabel: resolveEntityLabel(collection, nextItem, nextDb),
+          changeType: '추가',
+          changes: buildChangeEntries(null, nextItem, '추가'),
+          createdAt,
+        })
+        return
+      }
+
+      const changes = buildChangeEntries(previousItem, nextItem, '수정')
+      if (changes.length === 0) return
+
+      logs.push({
+        id: uid('change'),
+        actorId: actor.id,
+        actorName: actor.name,
+        actorRole: actor.role,
+        action,
+        detail,
+        entityType: COLLECTION_LABELS[collection],
+        entityId: itemId,
+        entityLabel: resolveEntityLabel(collection, nextItem, nextDb),
+        changeType: '수정',
+        changes,
+        createdAt,
+      })
+    })
+
+    previousMap.forEach((previousItem, itemId) => {
+      if (nextMap.has(itemId)) return
+
+      logs.push({
+        id: uid('change'),
+        actorId: actor.id,
+        actorName: actor.name,
+        actorRole: actor.role,
+        action,
+        detail,
+        entityType: COLLECTION_LABELS[collection],
+        entityId: itemId,
+        entityLabel: resolveEntityLabel(collection, previousItem, previousDb),
+        changeType: '삭제',
+        changes: buildChangeEntries(previousItem, null, '삭제'),
+        createdAt,
+      })
+    })
+  })
+
+  return logs
+}
+
+function parseTimeToMinute(value: string) {
+  const [hourRaw, minuteRaw] = value.split(':')
+  const hour = Number(hourRaw)
+  const minute = Number(minuteRaw)
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) return null
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
+  return hour * 60 + minute
+}
+
+function hoursInRange(range: string) {
+  const [startRaw, endRaw] = range.split('-')
+  if (!startRaw || !endRaw) return [] as number[]
+
+  const startMinute = parseTimeToMinute(startRaw)
+  const endMinute = parseTimeToMinute(endRaw)
+  if (startMinute === null || endMinute === null || endMinute <= startMinute) {
+    return [] as number[]
+  }
+
+  // Show each session only in its starting hour cell to keep the weekly view compact.
+  return [Math.floor(startMinute / 60)]
+}
+
+function splitClassDays(value: string) {
+  return value
+    .split('/')
+    .map((day) => day.trim())
+    .filter((day): day is (typeof WEEK_DAYS)[number] => WEEK_DAYS.includes(day as (typeof WEEK_DAYS)[number]))
+}
+
+function getWeekDayFromDate(dateValue: string) {
+  const [yearRaw, monthRaw, dayRaw] = dateValue.split('-')
+  const year = Number(yearRaw)
+  const month = Number(monthRaw)
+  const day = Number(dayRaw)
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return null
+
+  const date = new Date(year, month - 1, day)
+  if (Number.isNaN(date.getTime())) return null
+  return WEEK_DAYS[(date.getDay() + 6) % 7]
+}
+
+function withCurrentValue(options: SearchableOption[], value: string, suffix = '기존 값') {
+  if (!value || options.some((option) => option.value === value)) {
+    return options
+  }
+
+  return [{ value, label: `${value} (${suffix})` }, ...options]
+}
+
+function SearchableSelect({
+  value,
+  onChange,
+  options,
+  placeholder,
+  emptyMessage = '검색 결과가 없습니다.',
+  disabled = false,
+  clearable = false,
+  clearLabel = '선택 해제',
+}: {
+  value: string
+  onChange: (value: string) => void
+  options: SearchableOption[]
+  placeholder: string
+  emptyMessage?: string
+  disabled?: boolean
+  clearable?: boolean
+  clearLabel?: string
+}) {
+  const [query, setQuery] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+
+  const selectedOption = options.find((option) => option.value === value) ?? null
+
+  useEffect(() => {
+    if (!isOpen) {
+      setQuery(selectedOption?.label ?? '')
+    }
+  }, [isOpen, selectedOption])
+
+  const filteredOptions = useMemo(() => {
+    const normalized = query.trim().toLowerCase()
+    if (!normalized) return options
+
+    return options.filter((option) => {
+      const haystack = `${option.label} ${option.searchText ?? ''}`.toLowerCase()
+      return haystack.includes(normalized)
+    })
+  }, [options, query])
+
+  const selectOption = (nextValue: string) => {
+    const nextOption = options.find((option) => option.value === nextValue) ?? null
+    onChange(nextValue)
+    setQuery(nextOption?.label ?? '')
+    setIsOpen(false)
+  }
+
+  return (
+    <div
+      className={`search-select${disabled ? ' disabled' : ''}`}
+      onBlurCapture={(e) => {
+        const nextTarget = e.relatedTarget as Node | null
+        if (!e.currentTarget.contains(nextTarget)) {
+          setIsOpen(false)
+          setQuery(selectedOption?.label ?? '')
+        }
+      }}
+    >
+      <div className="search-select-field">
+        <input
+          value={query}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete="off"
+          onFocus={() => setIsOpen(true)}
+          onChange={(e) => {
+            const nextQuery = e.target.value
+            setQuery(nextQuery)
+            setIsOpen(true)
+            if (!nextQuery.trim() && value) {
+              onChange('')
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && filteredOptions.length > 0) {
+              e.preventDefault()
+              selectOption(filteredOptions[0].value)
+            }
+            if (e.key === 'Escape') {
+              setIsOpen(false)
+              setQuery(selectedOption?.label ?? '')
+            }
+          }}
+        />
+        {clearable && value && !disabled && (
+          <button
+            type="button"
+            className="search-select-clear"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              onChange('')
+              setQuery('')
+              setIsOpen(false)
+            }}
+          >
+            {clearLabel}
+          </button>
+        )}
+      </div>
+
+      {isOpen && !disabled && (
+        <div className="search-select-menu">
+          {filteredOptions.length > 0 ? (
+            filteredOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`search-select-option${option.value === value ? ' active' : ''}`}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => selectOption(option.value)}
+              >
+                {option.label}
+              </button>
+            ))
+          ) : (
+            <div className="search-select-empty">{emptyMessage}</div>
+          )}
+        </div>
+      )}
+    </div>
+  )
 }
 
 function seedDb(): DB {
@@ -400,18 +815,6 @@ function seedDb(): DB {
   }
 }
 
-function loadDb(): DB {
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) return seedDb()
-  try {
-    const parsed = JSON.parse(raw) as DB
-    if (!parsed.students || !parsed.classes) return seedDb()
-    return parsed
-  } catch {
-    return seedDb()
-  }
-}
-
 function loadAuthUser(): AuthUser | null {
   const raw = sessionStorage.getItem(AUTH_KEY)
   if (!raw) return null
@@ -433,15 +836,30 @@ function loadAuditLogs(): AuditLog[] {
   }
 }
 
+function loadChangeLogs(): DataChangeLog[] {
+  const raw = localStorage.getItem(CHANGE_LOG_KEY)
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw) as DataChangeLog[]
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 function loadAuthToken(): string {
   return sessionStorage.getItem(AUTH_TOKEN_KEY) ?? ''
 }
 
 function App() {
-  const [db, setDb] = useState<DB>(loadDb)
+  const [db, setDb] = useState<DB>(seedDb)
+  const [dbLoaded, setDbLoaded] = useState(false)
+  const [hasMigratableData, setHasMigratableData] = useState(false)
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(loadAuthUser)
   const [authToken, setAuthToken] = useState<string>(loadAuthToken)
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(loadAuditLogs)
+  const [changeLogs, setChangeLogs] = useState<DataChangeLog[]>(loadChangeLogs)
   const [loginId, setLoginId] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   const [menu, setMenu] = useState<MenuKey>('dashboard')
@@ -455,6 +873,9 @@ function App() {
   const [studentSort, setStudentSort] = useState<'name' | 'createdAt'>('createdAt')
   const [studentPage, setStudentPage] = useState(1)
   const pageSize = 6
+
+  const [editingSessionStudentId, setEditingSessionStudentId] = useState<string | null>(null)
+  const [editingSessionValue, setEditingSessionValue] = useState<string>('')
 
   const [editingStudentId, setEditingStudentId] = useState<string>('')
   const [studentForm, setStudentForm] = useState({
@@ -476,7 +897,7 @@ function App() {
     startTime: '',
     endTime: '',
     room: '',
-    capacity: 10,
+    capacity: 7,
     memo: '',
   })
 
@@ -492,6 +913,11 @@ function App() {
     time: '',
   })
   const [attendanceDrafts, setAttendanceDrafts] = useState<Record<string, AttendanceDraft>>({})
+  const [attendanceHistoryStudentId, setAttendanceHistoryStudentId] = useState('')
+  const [attendanceHistoryClassId, setAttendanceHistoryClassId] = useState('')
+  const [attendanceHistoryStatus, setAttendanceHistoryStatus] = useState('')
+  const [attendanceHistoryStartDate, setAttendanceHistoryStartDate] = useState(today)
+  const [attendanceHistoryEndDate, setAttendanceHistoryEndDate] = useState(today)
 
   const [gradeForm, setGradeForm] = useState({
     studentId: '',
@@ -527,18 +953,79 @@ function App() {
     memo: '',
   })
   const [makeupPeriod, setMakeupPeriod] = useState({
-    startDate: '',
-    endDate: '',
+    startDate: today,
+    endDate: today,
   })
   const [makeupScheduleDraft, setMakeupScheduleDraft] = useState<Record<string, string>>({})
 
   useEffect(() => {
+    // 로컬 백업 저장
     localStorage.setItem(STORAGE_KEY, JSON.stringify(db))
-  }, [db])
+    if (!dbLoaded || !authToken) return
+    // 서버에 디바운스 저장 (1초 후)
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => {
+      fetch(`${API_BASE_URL}/api/db`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+        body: JSON.stringify({ db }),
+      }).catch(() => {})
+    }, 1000)
+  }, [db, dbLoaded, authToken])
+
+  // 로그인 후 서버에서 DB 로드
+  useEffect(() => {
+    if (!currentUser || !authToken) return
+    setDbLoaded(false)
+    fetch(`${API_BASE_URL}/api/db`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error('load-failed')
+        return res.json() as Promise<{ db: DB | null }>
+      })
+      .then(({ db: serverDb }) => {
+        if (serverDb && serverDb.students) {
+          // 서버에 데이터 있음 → 서버 데이터 사용
+          setDb(serverDb)
+          setHasMigratableData(false)
+        } else {
+          // 서버에 데이터 없음 → localStorage 마이그레이션 확인
+          const localRaw = localStorage.getItem(STORAGE_KEY)
+          if (localRaw) {
+            try {
+              const localDb = JSON.parse(localRaw) as DB
+              if (localDb.students && localDb.students.length > 0) {
+                setHasMigratableData(true)
+                setDb(localDb)
+              }
+            } catch {
+              /* ignore */
+            }
+          }
+        }
+        setDbLoaded(true)
+      })
+      .catch(() => {
+        // 서버 연결 실패 시 localStorage 폴백
+        const localRaw = localStorage.getItem(STORAGE_KEY)
+        if (localRaw) {
+          try {
+            const localDb = JSON.parse(localRaw) as DB
+            if (localDb.students) setDb(localDb)
+          } catch { /* ignore */ }
+        }
+        setDbLoaded(true)
+      })
+  }, [currentUser, authToken])
 
   useEffect(() => {
     localStorage.setItem(AUDIT_KEY, JSON.stringify(auditLogs))
   }, [auditLogs])
+
+  useEffect(() => {
+    localStorage.setItem(CHANGE_LOG_KEY, JSON.stringify(changeLogs))
+  }, [changeLogs])
 
   useEffect(() => {
     if (currentUser) {
@@ -578,6 +1065,143 @@ function App() {
 
   const todayAttendances = db.attendances.filter((a) => a.date === today)
   const unpaidCount = db.payments.filter((p) => p.status === '미납').length
+  const gradeFilterOptions = useMemo(
+    () => [
+      { value: '전체', label: '전체 학년' },
+      ...[...new Set(db.students.map((student) => student.grade))].map((grade) => ({
+        value: grade,
+        label: grade,
+      })),
+    ],
+    [db.students],
+  )
+  const studentOptions = useMemo(
+    () => db.students.map((student) => ({
+      value: student.id,
+      label: `${student.name} (${student.grade})`,
+      searchText: `${student.school} ${student.phone} ${student.guardianName} ${student.guardianPhone}`,
+    })),
+    [db.students],
+  )
+  const attendanceClassOptions = useMemo(() => {
+    const selectedDay = getWeekDayFromDate(attendanceForm.date)
+    const dayRank = new Map<(typeof WEEK_DAYS)[number], number>(WEEK_DAYS.map((day, index) => [day, index]))
+
+    return [...db.classes]
+      .sort((left, right) => {
+        const leftMatches = selectedDay && left.day === selectedDay ? 0 : 1
+        const rightMatches = selectedDay && right.day === selectedDay ? 0 : 1
+        if (leftMatches !== rightMatches) return leftMatches - rightMatches
+
+        const leftDayRank = dayRank.get(left.day as (typeof WEEK_DAYS)[number]) ?? 99
+        const rightDayRank = dayRank.get(right.day as (typeof WEEK_DAYS)[number]) ?? 99
+        if (leftDayRank !== rightDayRank) return leftDayRank - rightDayRank
+
+        if (left.time !== right.time) return left.time.localeCompare(right.time)
+        return left.subject.localeCompare(right.subject, 'ko-KR')
+      })
+      .map((academyClass) => ({
+        value: academyClass.id,
+        label: `${academyClass.subject} (${academyClass.day} ${academyClass.time})`,
+        searchText: `${academyClass.teacher} ${academyClass.room}`,
+      }))
+  }, [attendanceForm.date, db.classes])
+  const classDayOptions = useMemo(
+    () => withCurrentValue(CLASS_DAY_OPTIONS.map((day) => ({ value: day, label: day })), classForm.day),
+    [classForm.day],
+  )
+  const classStartTimeOptions = useMemo(
+    () => withCurrentValue(HOUR_TIME_OPTIONS.map((time) => ({ value: time, label: time })), classForm.startTime),
+    [classForm.startTime],
+  )
+  const classEndTimeOptions = useMemo(
+    () => withCurrentValue(HOUR_TIME_OPTIONS.map((time) => ({ value: time, label: time })), classForm.endTime),
+    [classForm.endTime],
+  )
+  const attendanceTimeOptions = useMemo(
+    () => HOUR_TIME_OPTIONS.map((time) => ({ value: time, label: time })),
+    [],
+  )
+
+  const weeklyTimetable = useMemo(() => {
+    const activeStudentsByClass = new Map<string, string[]>()
+    db.enrollments
+      .filter((enrollment) => !enrollment.endDate)
+      .forEach((enrollment) => {
+        const studentName = studentMap.get(enrollment.studentId)?.name
+        if (!studentName) return
+        const existing = activeStudentsByClass.get(enrollment.classId) ?? []
+        existing.push(studentName)
+        activeStudentsByClass.set(enrollment.classId, existing)
+      })
+
+    const schedule = new Map<string, TimetableEntry[]>()
+
+    db.classes.forEach((academyClass) => {
+      const days = splitClassDays(academyClass.day)
+      const hours = hoursInRange(academyClass.time)
+      if (!days.length || !hours.length) return
+
+      const entry: TimetableEntry = {
+        classId: academyClass.id,
+        subject: academyClass.subject,
+        teacher: academyClass.teacher,
+        time: academyClass.time,
+        students: (activeStudentsByClass.get(academyClass.id) ?? []).sort((a, b) => a.localeCompare(b, 'ko-KR')),
+        sessionType: '정규',
+      }
+
+      days.forEach((day) => {
+        hours.forEach((hour) => {
+          const key = `${day}_${hour}`
+          const bucket = schedule.get(key) ?? []
+          bucket.push(entry)
+          schedule.set(key, bucket)
+        })
+      })
+    })
+
+    db.makeups.forEach((makeup) => {
+      const day = getWeekDayFromDate(makeup.scheduledDate)
+      if (!day) return
+
+      const linkedClass = classMap.get(makeup.classId)
+      if (!linkedClass) return
+
+      const hours = hoursInRange(linkedClass.time)
+      if (!hours.length) return
+
+      const studentName = studentMap.get(makeup.studentId)?.name
+      if (!studentName) return
+
+      const entry: TimetableEntry = {
+        classId: linkedClass.id,
+        subject: linkedClass.subject,
+        teacher: linkedClass.teacher,
+        time: linkedClass.time,
+        // For makeup sessions, show only the target student.
+        students: [studentName],
+        sessionType: '보강',
+      }
+
+      hours.forEach((hour) => {
+        const key = `${day}_${hour}`
+        const bucket = schedule.get(key) ?? []
+        bucket.push(entry)
+        schedule.set(key, bucket)
+      })
+    })
+
+    schedule.forEach((entries, key) => {
+      const sorted = [...entries].sort((a, b) => {
+        if (a.time === b.time) return a.subject.localeCompare(b.subject, 'ko-KR')
+        return a.time.localeCompare(b.time)
+      })
+      schedule.set(key, sorted)
+    })
+
+    return schedule
+  }, [classMap, db.classes, db.enrollments, db.makeups, studentMap])
 
   const selectedAttendanceClassStudents = useMemo(() => {
     if (!attendanceForm.classId) return [] as Student[]
@@ -594,6 +1218,12 @@ function App() {
       setAttendanceForm((prev) => ({ ...prev, time: defaultTime }))
     }
   }, [attendanceForm.classId, attendanceForm.time, classMap])
+
+  useEffect(() => {
+    if (menu === 'attendance' && !attendanceForm.date) {
+      setAttendanceForm((prev) => ({ ...prev, date: today }))
+    }
+  }, [attendanceForm.date, menu])
 
   useEffect(() => {
     if (!attendanceForm.classId) {
@@ -620,7 +1250,7 @@ function App() {
           : undefined
 
         nextDrafts[student.id] = {
-          status: prev[student.id]?.status ?? existingAttendance?.status ?? '출석',
+          status: prev[student.id]?.status ?? existingAttendance?.status ?? '',
           memo: prev[student.id]?.memo ?? existingAttendance?.memo ?? '',
           createMakeup:
             prev[student.id]?.createMakeup ?? Boolean(existingMakeup),
@@ -690,8 +1320,14 @@ function App() {
   const updateDb = (updater: (prev: DB) => DB, action?: string, detail?: string) => {
     setError('')
     setNotice('')
-    setDb((prev) => updater(prev))
+    const nextDb = updater(db)
+    setDb(nextDb)
     if (action) appendAudit(action, detail ?? '')
+
+    const nextChangeLogs = buildDataChangeLogs(db, nextDb, currentUser, action ?? '데이터 변경', detail ?? '')
+    if (nextChangeLogs.length > 0) {
+      setChangeLogs((prev) => [...nextChangeLogs, ...prev].slice(0, 8000))
+    }
   }
 
   const canAccess = (target: MenuKey) => {
@@ -711,7 +1347,19 @@ function App() {
       })
 
       if (!response.ok) {
-        setError('아이디 또는 비밀번호가 올바르지 않습니다.')
+        let serverMessage = ''
+        try {
+          const errorData = (await response.json()) as { message?: string }
+          serverMessage = String(errorData?.message ?? '').trim()
+        } catch {
+          // Ignore parse errors and fall back to generic message.
+        }
+
+        if (response.status === 401) {
+          setError(serverMessage || '아이디 또는 비밀번호가 올바르지 않습니다.')
+        } else {
+          setError(serverMessage || '로그인 요청에 실패했습니다. API 주소 및 서버 상태를 확인해 주세요.')
+        }
         return
       }
 
@@ -954,7 +1602,8 @@ function App() {
   }
 
   const deleteStudent = (studentId: string) => {
-    if (!window.confirm('학생을 삭제하면 관련 데이터도 함께 삭제됩니다. 진행할까요?')) return
+    const targetStudent = studentMap.get(studentId)
+    if (!window.confirm(`${targetStudent?.name ?? '해당'} 학생을 삭제하면 관련 데이터도 함께 삭제됩니다. 진행할까요?`)) return
     updateDb((prev) => ({
       ...prev,
       students: prev.students.filter((s) => s.id !== studentId),
@@ -974,7 +1623,7 @@ function App() {
   const withdrawStudent = (studentId: string) => {
     const targetStudent = studentMap.get(studentId)
     if (!targetStudent || targetStudent.isWithdrawn) return
-    if (!window.confirm(`${targetStudent.name} 학생을 퇴원 처리할까요? 활성 배정 수업에서 자동 제외됩니다.`)) return
+    if (!window.confirm(`${targetStudent.name} 학생을 퇴원 처리할까요? 활성 배정 수업에서 자동 제외되며, 출결/보강 데이터는 유지됩니다.`)) return
 
     updateDb((prev) => ({
       ...prev,
@@ -1041,6 +1690,29 @@ function App() {
     setNotice(`${targetStudent.name} 학생의 체크 회차를 초기화했습니다.`)
   }
 
+  const saveSessionEdit = (studentId: string, checkedSessions: number) => {
+    const parsed = parseInt(editingSessionValue, 10)
+    if (isNaN(parsed) || parsed < 0) {
+      setError('회차는 0 이상의 숫자여야 합니다.')
+      setEditingSessionStudentId(null)
+      return
+    }
+    const newOffset = parsed - checkedSessions
+    const targetStudent = studentMap.get(studentId)
+    updateDb(
+      (prev) => ({
+        ...prev,
+        students: prev.students.map((s) =>
+          s.id === studentId ? { ...s, sessionOffset: newOffset } : s,
+        ),
+      }),
+      '회차 수동 수정',
+      `${targetStudent?.name ?? studentId}: ${checkedSessions + (targetStudent?.sessionOffset ?? 0)}회 → ${parsed}회`,
+    )
+    setEditingSessionStudentId(null)
+    setNotice(`회차가 ${parsed}회로 수정되었습니다.`)
+  }
+
   const submitClass = (e: FormEvent) => {
     e.preventDefault()
     if (!classForm.subject || !classForm.teacher || !classForm.day || !classForm.startTime || !classForm.endTime) {
@@ -1099,7 +1771,7 @@ function App() {
       startTime: '',
       endTime: '',
       room: '',
-      capacity: 10,
+      capacity: 7,
       memo: '',
     })
   }
@@ -1188,6 +1860,15 @@ function App() {
       return
     }
 
+    const hasSelectedStatus = selectedAttendanceClassStudents.some((student) => {
+      const draft = attendanceDrafts[student.id]
+      return Boolean(draft?.status)
+    })
+    if (!hasSelectedStatus) {
+      setError('상태를 하나도 선택하지 않았습니다.')
+      return
+    }
+
     let insertedCount = 0
     let updatedCount = 0
     let makeupCount = 0
@@ -1198,10 +1879,14 @@ function App() {
 
       selectedAttendanceClassStudents.forEach((student) => {
         const draft = attendanceDrafts[student.id] ?? {
-          status: '출석',
+          status: '',
           memo: '',
           createMakeup: false,
           makeupDate: attendanceForm.date,
+        }
+
+        if (!draft.status) {
+          return
         }
 
         const attendanceIndex = nextAttendances.findIndex(
@@ -1285,6 +1970,71 @@ function App() {
       time: '',
     })
     setAttendanceDrafts({})
+  }
+
+  const markAllAttendancePresent = () => {
+    if (!attendanceForm.classId) {
+      setError('수업을 먼저 선택해 주세요.')
+      return
+    }
+    if (selectedAttendanceClassStudents.length === 0) {
+      setError('선택한 수업에 배정된 학생이 없습니다.')
+      return
+    }
+
+    setAttendanceDrafts((prev) => {
+      const nextDrafts = { ...prev }
+      selectedAttendanceClassStudents.forEach((student) => {
+        const current = nextDrafts[student.id] ?? {
+          status: '' as AttendanceStatus | '',
+          memo: '',
+          createMakeup: false,
+          makeupDate: attendanceForm.date,
+        }
+
+        nextDrafts[student.id] = {
+          ...current,
+          status: '출석',
+          createMakeup: false,
+          makeupDate: current.makeupDate || attendanceForm.date,
+        }
+      })
+      return nextDrafts
+    })
+
+    setNotice('선택한 수업의 배정 학생들을 모두 출석으로 표시했습니다.')
+  }
+
+  const clearAllAttendanceDrafts = () => {
+    if (!attendanceForm.classId) {
+      setError('수업을 먼저 선택해 주세요.')
+      return
+    }
+    if (selectedAttendanceClassStudents.length === 0) {
+      setError('선택한 수업에 배정된 학생이 없습니다.')
+      return
+    }
+
+    setAttendanceDrafts((prev) => {
+      const nextDrafts = { ...prev }
+      selectedAttendanceClassStudents.forEach((student) => {
+        const current = nextDrafts[student.id] ?? {
+          status: '' as AttendanceStatus | '',
+          memo: '',
+          createMakeup: false,
+          makeupDate: attendanceForm.date,
+        }
+
+        nextDrafts[student.id] = {
+          ...current,
+          status: '',
+          createMakeup: false,
+        }
+      })
+      return nextDrafts
+    })
+
+    setNotice('선택한 수업의 배정 학생 출석 상태를 모두 해제했습니다.')
   }
 
   const submitGrade = (e: FormEvent) => {
@@ -1418,7 +2168,16 @@ function App() {
     const targetAttendance = db.attendances.find((attendance) => attendance.id === attendanceId)
     if (!targetAttendance) return
 
-    if (!window.confirm('해당 출결 기록을 취소할까요?')) {
+    const linkedMakeups =
+      targetAttendance.type === '정규'
+        ? db.makeups.filter((makeup) => makeup.absentAttendanceId === attendanceId)
+        : []
+    const confirmMessage =
+      targetAttendance.type === '정규' && linkedMakeups.length > 0
+        ? '이 결석을 취소하면 연결된 보강 예약과 보강 출결도 함께 삭제됩니다. 계속할까요?'
+        : '해당 출결 기록을 취소할까요?'
+
+    if (!window.confirm(confirmMessage)) {
       return
     }
 
@@ -1473,6 +2232,24 @@ function App() {
     const recentStudents = byRecent(db.students).slice(0, 5)
     const recentCounsels = byRecent(db.counsels).slice(0, 5)
     const recentNotes = byRecent(db.notes).slice(0, 5)
+
+    const billingNoticeStudents = db.students
+      .filter((student) => !student.isWithdrawn)
+      .map((student) => {
+        const checkedSessions = db.attendances.filter(
+          (attendance) =>
+            attendance.studentId === student.id &&
+            attendance.type === '정규' &&
+            DEDUCT_STATUSES.includes(attendance.status),
+        ).length
+        const totalSessions = checkedSessions + (student.sessionOffset ?? 0)
+        return { student, totalSessions }
+      })
+      .filter(({ totalSessions }) => totalSessions >= 0 && totalSessions % 4 === 0)
+      .sort((a, b) => {
+        if (a.totalSessions !== b.totalSessions) return b.totalSessions - a.totalSessions
+        return a.student.name.localeCompare(b.student.name, 'ko-KR')
+      })
 
     const todayStatusCount = {
       출석: todayAttendances.filter((x) => x.status === '출석').length,
@@ -1537,6 +2314,84 @@ function App() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="card">
+          <h3>수강료 발송대상</h3>
+          <ul className="line-list">
+            {billingNoticeStudents.length === 0 ? (
+              <li>
+                <span>대상 없음</span>
+                <small>전체체크회차가 4의 배수인 학생이 없습니다.</small>
+              </li>
+            ) : (
+              billingNoticeStudents.map(({ student, totalSessions }) => (
+                <li key={student.id}>
+                  <span>{student.name}</span>
+                  <small>{student.grade} · {student.school} · 전체체크회차 {totalSessions}회</small>
+                </li>
+              ))
+            )}
+          </ul>
+        </section>
+
+        <section className="card">
+          <h3>주간 시간표</h3>
+          <div className="table-wrap timetable-wrap">
+            <table className="timetable">
+              <thead>
+                <tr>
+                  <th className="time-col">시간</th>
+                  {WEEK_DAYS.map((day) => (
+                    <th key={day}>{day}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {HOUR_TIME_OPTIONS.map((slot) => {
+                  const hour = Number(slot.slice(0, 2))
+                  return (
+                    <tr key={slot}>
+                      <th className="time-col">{slot}</th>
+                      {WEEK_DAYS.map((day) => {
+                        const entries = weeklyTimetable.get(`${day}_${hour}`) ?? []
+                        return (
+                          <td key={`${day}_${slot}`}>
+                            {entries.length ? (
+                              <div className="timetable-cell-list">
+                                {entries.map((entry) => {
+                                  const visibleStudents = entry.students.slice(0, 3)
+                                  const restStudentCount = Math.max(entry.students.length - visibleStudents.length, 0)
+
+                                  return (
+                                    <article key={`${entry.classId}_${day}_${slot}`} className="timetable-item">
+                                      <strong>
+                                        {entry.subject}
+                                        <span className={`badge ${entry.sessionType === '보강' ? 'makeup' : 'ok'}`}>
+                                          {entry.sessionType}
+                                        </span>
+                                      </strong>
+                                      <small>{entry.time} · {entry.teacher}</small>
+                                      <small>
+                                        학생: {visibleStudents.join(', ') || '-'}
+                                        {restStudentCount > 0 ? ` 외 ${restStudentCount}명` : ''}
+                                      </small>
+                                    </article>
+                                  )
+                                })}
+                              </div>
+                            ) : (
+                              <span className="timetable-empty">-</span>
+                            )}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
     )
@@ -1614,22 +2469,23 @@ function App() {
                 setStudentPage(1)
               }}
             />
-            <select
+            <SearchableSelect
               value={studentGradeFilter}
-              onChange={(e) => {
-                setStudentGradeFilter(e.target.value)
+              onChange={(value) => {
+                setStudentGradeFilter(value || '전체')
                 setStudentPage(1)
               }}
-            >
-              <option value="전체">전체 학년</option>
-              {[...new Set(db.students.map((s) => s.grade))].map((grade) => (
-                <option key={grade} value={grade}>{grade}</option>
-              ))}
-            </select>
-            <select value={studentSort} onChange={(e) => setStudentSort(e.target.value as 'name' | 'createdAt')}>
-              <option value="createdAt">최신 등록순</option>
-              <option value="name">이름순</option>
-            </select>
+              placeholder="학년 검색/선택"
+              options={gradeFilterOptions}
+              emptyMessage="학년 검색 결과가 없습니다."
+            />
+            <SearchableSelect
+              value={studentSort}
+              onChange={(value) => setStudentSort((value || 'createdAt') as 'name' | 'createdAt')}
+              placeholder="정렬 방식 선택"
+              options={STUDENT_SORT_OPTIONS}
+              emptyMessage="정렬 옵션이 없습니다."
+            />
           </div>
         </div>
 
@@ -1653,6 +2509,11 @@ function App() {
                 const checkedSessions = db.attendances.filter(
                   (a) => a.studentId === s.id && a.type === '정규' && DEDUCT_STATUSES.includes(a.status),
                 ).length
+                const absentSessions = db.attendances.filter(
+                  (a) => a.studentId === s.id && a.type === '정규' && a.status === '결석',
+                ).length
+                const totalSessions = checkedSessions + (s.sessionOffset ?? 0)
+                const isEditingSession = editingSessionStudentId === s.id
                 return (
                   <tr key={s.id}>
                     <td>{s.name}</td>
@@ -1661,7 +2522,50 @@ function App() {
                     <td>{s.phone}</td>
                     <td>{s.guardianName} ({s.guardianPhone})</td>
                     <td>{assigned.length}개</td>
-                    <td>{checkedSessions}회</td>
+                    <td>
+                      {isEditingSession ? (
+                        <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <input
+                            type="number"
+                            min={0}
+                            style={{ width: 60, padding: '2px 4px', fontSize: 13 }}
+                            value={editingSessionValue}
+                            onChange={(e) => setEditingSessionValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') saveSessionEdit(s.id, checkedSessions)
+                              if (e.key === 'Escape') setEditingSessionStudentId(null)
+                            }}
+                            autoFocus
+                          />
+                            <button className="btn mini" onClick={() => saveSessionEdit(s.id, checkedSessions)}>저장</button>
+                            <button className="btn mini" onClick={() => setEditingSessionStudentId(null)}>취소</button>
+                          </span>
+                          <small style={{ color: '#7a8a99' }}>결석 {absentSessions}회</small>
+                        </span>
+                      ) : (
+                        <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            {totalSessions}회
+                            {(s.sessionOffset ?? 0) !== 0 && (
+                              <span style={{ fontSize: 11, color: '#888' }}>
+                                (자동 {checkedSessions}회{s.sessionOffset! > 0 ? ` +${s.sessionOffset}` : ` ${s.sessionOffset}`})
+                              </span>
+                            )}
+                            <button
+                              className="btn mini"
+                              onClick={() => {
+                                setEditingSessionStudentId(s.id)
+                                setEditingSessionValue(String(totalSessions))
+                              }}
+                            >
+                              수정
+                            </button>
+                          </span>
+                          <small style={{ color: '#7a8a99' }}>결석 {absentSessions}회</small>
+                        </span>
+                      )}
+                    </td>
                     <td className="row-actions">
                       <button
                         className="btn mini"
@@ -1711,33 +2615,27 @@ function App() {
           <form className="grid-form" onSubmit={submitClass}>
             <input placeholder="과목명" value={classForm.subject} onChange={(e) => setClassForm((f) => ({ ...f, subject: e.target.value }))} />
             <input placeholder="강사" value={classForm.teacher} onChange={(e) => setClassForm((f) => ({ ...f, teacher: e.target.value }))} />
-            <select value={classForm.day} onChange={(e) => setClassForm((f) => ({ ...f, day: e.target.value }))}>
-              <option value="">요일 선택</option>
-              {!CLASS_DAY_OPTIONS.includes(classForm.day) && classForm.day && (
-                <option value={classForm.day}>{classForm.day} (기존 값)</option>
-              )}
-              {CLASS_DAY_OPTIONS.map((day) => (
-                <option key={day} value={day}>{day}</option>
-              ))}
-            </select>
-            <select value={classForm.startTime} onChange={(e) => setClassForm((f) => ({ ...f, startTime: e.target.value }))}>
-              <option value="">시작시간</option>
-              {!HOUR_TIME_OPTIONS.includes(classForm.startTime) && classForm.startTime && (
-                <option value={classForm.startTime}>{classForm.startTime} (기존 값)</option>
-              )}
-              {HOUR_TIME_OPTIONS.map((time) => (
-                <option key={time} value={time}>{time}</option>
-              ))}
-            </select>
-            <select value={classForm.endTime} onChange={(e) => setClassForm((f) => ({ ...f, endTime: e.target.value }))}>
-              <option value="">종료시간</option>
-              {!HOUR_TIME_OPTIONS.includes(classForm.endTime) && classForm.endTime && (
-                <option value={classForm.endTime}>{classForm.endTime} (기존 값)</option>
-              )}
-              {HOUR_TIME_OPTIONS.map((time) => (
-                <option key={time} value={time}>{time}</option>
-              ))}
-            </select>
+            <SearchableSelect
+              value={classForm.day}
+              onChange={(value) => setClassForm((f) => ({ ...f, day: value }))}
+              placeholder="요일 검색/선택"
+              options={classDayOptions}
+              emptyMessage="요일 검색 결과가 없습니다."
+            />
+            <SearchableSelect
+              value={classForm.startTime}
+              onChange={(value) => setClassForm((f) => ({ ...f, startTime: value }))}
+              placeholder="시작시간 검색/선택"
+              options={classStartTimeOptions}
+              emptyMessage="시작시간 검색 결과가 없습니다."
+            />
+            <SearchableSelect
+              value={classForm.endTime}
+              onChange={(value) => setClassForm((f) => ({ ...f, endTime: value }))}
+              placeholder="종료시간 검색/선택"
+              options={classEndTimeOptions}
+              emptyMessage="종료시간 검색 결과가 없습니다."
+            />
             <input placeholder="강의실" value={classForm.room} onChange={(e) => setClassForm((f) => ({ ...f, room: e.target.value }))} />
             <input
               type="number"
@@ -1760,7 +2658,7 @@ function App() {
                     startTime: '',
                     endTime: '',
                     room: '',
-                    capacity: 10,
+                    capacity: 7,
                     memo: '',
                   })
                 }}
@@ -1814,12 +2712,17 @@ function App() {
           <section className="card">
             <h3>수업 학생 배정: {classMap.get(assignClassId)?.subject}</h3>
             <form className="grid-form" onSubmit={submitEnrollment}>
-              <select value={assignForm.studentId} onChange={(e) => setAssignForm((f) => ({ ...f, studentId: e.target.value }))}>
-                <option value="">학생 선택</option>
-                {availableStudents.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name} ({s.grade})</option>
-                ))}
-              </select>
+              <SearchableSelect
+                value={assignForm.studentId}
+                onChange={(value) => setAssignForm((f) => ({ ...f, studentId: value }))}
+                placeholder="학생 검색 후 선택"
+                options={availableStudents.map((student) => ({
+                  value: student.id,
+                  label: `${student.name} (${student.grade})`,
+                  searchText: `${student.school} ${student.phone}`,
+                }))}
+                emptyMessage="선택 가능한 학생이 없습니다."
+              />
               <input type="date" value={assignForm.startDate} onChange={(e) => setAssignForm((f) => ({ ...f, startDate: e.target.value }))} />
               <div className="actions span-2">
                 <button type="submit" className="btn primary">학생 배정</button>
@@ -1872,6 +2775,15 @@ function App() {
       return matchedStart && matchedEnd
     }
 
+    const filteredAttendanceHistory = byRecent(db.attendances).filter((attendance) => {
+      const matchedStudent = !attendanceHistoryStudentId || attendance.studentId === attendanceHistoryStudentId
+      const matchedClass = !attendanceHistoryClassId || attendance.classId === attendanceHistoryClassId
+      const matchedStatus = !attendanceHistoryStatus || attendance.status === attendanceHistoryStatus
+      const matchedStartDate = !attendanceHistoryStartDate || attendance.date >= attendanceHistoryStartDate
+      const matchedEndDate = !attendanceHistoryEndDate || attendance.date <= attendanceHistoryEndDate
+      return matchedStudent && matchedClass && matchedStatus && matchedStartDate && matchedEndDate
+    })
+
     const filteredRegularAbsents = regularAbsents.filter((attendance) =>
       isInMakeupPeriod(attendance.date),
     )
@@ -1893,18 +2805,30 @@ function App() {
           <p className="helper">수업을 선택하면 배정된 학생 전체를 한 번에 출석체크할 수 있습니다. 정규 수업의 출석/지각/결석/조퇴는 회차 차감 대상입니다.</p>
           <form className="grid-form" onSubmit={submitAttendance}>
             <input type="date" value={attendanceForm.date} onChange={(e) => setAttendanceForm((f) => ({ ...f, date: e.target.value }))} />
-            <select value={attendanceForm.classId} onChange={(e) => setAttendanceForm((f) => ({ ...f, classId: e.target.value, time: '' }))}>
-              <option value="">수업 선택</option>
-              {db.classes.map((c) => (
-                <option key={c.id} value={c.id}>{c.subject} ({c.day} {c.time})</option>
-              ))}
-            </select>
-            <select value={attendanceForm.time} onChange={(e) => setAttendanceForm((f) => ({ ...f, time: e.target.value }))}>
-              <option value="">출결 시간 선택</option>
-              {HOUR_TIME_OPTIONS.map((time) => (
-                <option key={time} value={time}>{time}</option>
-              ))}
-            </select>
+            <SearchableSelect
+              value={attendanceForm.classId}
+              onChange={(value) => setAttendanceForm((f) => ({ ...f, classId: value, time: '' }))}
+              placeholder="수업 검색 후 선택"
+              options={attendanceClassOptions}
+              emptyMessage="수업 검색 결과가 없습니다."
+              clearable
+              clearLabel="지우기"
+            />
+            <SearchableSelect
+              value={attendanceForm.time}
+              onChange={(value) => setAttendanceForm((f) => ({ ...f, time: value }))}
+              placeholder="출결 시간 검색/선택"
+              options={attendanceTimeOptions}
+              emptyMessage="출결 시간 검색 결과가 없습니다."
+            />
+            <div className="actions span-2">
+              <button type="button" className="btn" onClick={markAllAttendancePresent}>
+                일괄 출석체크
+              </button>
+              <button type="button" className="btn" onClick={clearAllAttendanceDrafts}>
+                일괄 출석체크 해제
+              </button>
+            </div>
             <div className="span-2 table-wrap">
               <table>
                 <thead>
@@ -1925,10 +2849,21 @@ function App() {
                   ) : (
                     selectedAttendanceClassStudents.map((student) => {
                       const draft = attendanceDrafts[student.id] ?? {
-                        status: '출석' as AttendanceStatus,
+                        status: '' as AttendanceStatus | '',
                         memo: '',
                         createMakeup: false,
                         makeupDate: attendanceForm.date,
+                      }
+
+                      const setAttendanceStatus = (nextStatus: AttendanceStatus) => {
+                        setAttendanceDrafts((prev) => ({
+                          ...prev,
+                          [student.id]: {
+                            ...draft,
+                            status: draft.status === nextStatus ? '' : nextStatus,
+                            createMakeup: nextStatus === '결석' ? draft.createMakeup : false,
+                          },
+                        }))
                       }
 
                       return (
@@ -1936,25 +2871,40 @@ function App() {
                           <td>{student.name}</td>
                           <td>{student.grade}</td>
                           <td>
-                            <select
-                              value={draft.status}
-                              onChange={(e) =>
-                                setAttendanceDrafts((prev) => ({
-                                  ...prev,
-                                  [student.id]: {
-                                    ...draft,
-                                    status: e.target.value as AttendanceStatus,
-                                    createMakeup:
-                                      e.target.value === '결석' ? draft.createMakeup : false,
-                                  },
-                                }))
-                              }
-                            >
-                              <option value="출석">출석</option>
-                              <option value="지각">지각</option>
-                              <option value="결석">결석</option>
-                              <option value="조퇴">조퇴</option>
-                            </select>
+                            <div className="attendance-status-control">
+                              <label className="check">
+                                <input
+                                  type="checkbox"
+                                  checked={draft.status === '출석'}
+                                  onChange={() => setAttendanceStatus('출석')}
+                                />
+                                출석
+                              </label>
+                              <label className="check">
+                                <input
+                                  type="checkbox"
+                                  checked={draft.status === '결석'}
+                                  onChange={() => setAttendanceStatus('결석')}
+                                />
+                                결석
+                              </label>
+                              <label className="check">
+                                <input
+                                  type="checkbox"
+                                  checked={draft.status === '지각'}
+                                  onChange={() => setAttendanceStatus('지각')}
+                                />
+                                지각
+                              </label>
+                              <label className="check">
+                                <input
+                                  type="checkbox"
+                                  checked={draft.status === '조퇴'}
+                                  onChange={() => setAttendanceStatus('조퇴')}
+                                />
+                                조퇴
+                              </label>
+                            </div>
                           </td>
                           <td>
                             <input
@@ -2027,21 +2977,24 @@ function App() {
             <button
               type="button"
               className="btn"
-              onClick={() => setMakeupPeriod({ startDate: '', endDate: '' })}
+              onClick={() => setMakeupPeriod({ startDate: today, endDate: today })}
             >
               기간 초기화
             </button>
           </div>
           <p className="helper">결석일 또는 보강예정일이 선택한 기간에 포함된 항목만 표시됩니다.</p>
           <form className="inline-form" onSubmit={submitMakeup}>
-            <select value={makeupForm.absentAttendanceId} onChange={(e) => setMakeupForm((f) => ({ ...f, absentAttendanceId: e.target.value }))}>
-              <option value="">결석 수업 선택</option>
-              {filteredRegularAbsents.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.date} {a.time || ''} · {studentMap.get(a.studentId)?.name ?? '삭제된 학생'} · {classMap.get(a.classId)?.subject}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect
+              value={makeupForm.absentAttendanceId}
+              onChange={(value) => setMakeupForm((f) => ({ ...f, absentAttendanceId: value }))}
+              placeholder="결석 수업 검색 후 선택"
+              options={filteredRegularAbsents.map((attendance) => ({
+                value: attendance.id,
+                label: `${attendance.date} ${attendance.time || ''} · ${studentMap.get(attendance.studentId)?.name ?? '삭제된 학생'} · ${classMap.get(attendance.classId)?.subject ?? '삭제된 수업'}`,
+                searchText: `${studentMap.get(attendance.studentId)?.grade ?? ''} ${classMap.get(attendance.classId)?.teacher ?? ''}`,
+              }))}
+              emptyMessage="선택 가능한 결석 수업이 없습니다."
+            />
             <input type="date" value={makeupForm.scheduledDate} onChange={(e) => setMakeupForm((f) => ({ ...f, scheduledDate: e.target.value }))} />
             <input placeholder="보강 메모" value={makeupForm.memo} onChange={(e) => setMakeupForm((f) => ({ ...f, memo: e.target.value }))} />
             <button type="submit" className="btn primary">보강 예정 등록</button>
@@ -2095,6 +3048,60 @@ function App() {
 
         <section className="card">
           <h3>출결 내역</h3>
+          <div className="inline-form">
+            <SearchableSelect
+              value={attendanceHistoryStudentId}
+              onChange={setAttendanceHistoryStudentId}
+              placeholder="학생별 조회"
+              options={studentOptions}
+              emptyMessage="학생 검색 결과가 없습니다."
+              clearable
+              clearLabel="전체"
+            />
+            <SearchableSelect
+              value={attendanceHistoryClassId}
+              onChange={setAttendanceHistoryClassId}
+              placeholder="수업별 조회"
+              options={attendanceClassOptions}
+              emptyMessage="수업 검색 결과가 없습니다."
+              clearable
+              clearLabel="전체"
+            />
+            <input
+              type="date"
+              value={attendanceHistoryStartDate}
+              onChange={(e) => setAttendanceHistoryStartDate(e.target.value)}
+              placeholder="시작일"
+            />
+            <input
+              type="date"
+              value={attendanceHistoryEndDate}
+              onChange={(e) => setAttendanceHistoryEndDate(e.target.value)}
+              placeholder="종료일"
+            />
+            <SearchableSelect
+              value={attendanceHistoryStatus}
+              onChange={setAttendanceHistoryStatus}
+              placeholder="상태별 조회"
+              options={ATTENDANCE_HISTORY_STATUS_OPTIONS}
+              emptyMessage="상태 검색 결과가 없습니다."
+              clearable
+              clearLabel="전체"
+            />
+            <button
+              type="button"
+              className="btn"
+              onClick={() => {
+                setAttendanceHistoryStudentId('')
+                setAttendanceHistoryClassId('')
+                setAttendanceHistoryStatus('')
+                setAttendanceHistoryStartDate(today)
+                setAttendanceHistoryEndDate(today)
+              }}
+            >
+              필터 초기화
+            </button>
+          </div>
           <div className="table-wrap">
             <table>
               <thead>
@@ -2111,7 +3118,11 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {byRecent(db.attendances).map((a) => (
+                {filteredAttendanceHistory.length === 0 ? (
+                  <tr>
+                    <td colSpan={9}>조회 조건에 맞는 출결 내역이 없습니다.</td>
+                  </tr>
+                ) : filteredAttendanceHistory.map((a) => (
                   <tr key={a.id}>
                     <td>{a.date}</td>
                     <td>{a.time || '-'}</td>
@@ -2141,12 +3152,13 @@ function App() {
       <section className="card form-card">
         <h3>성적 입력</h3>
         <form className="grid-form" onSubmit={submitGrade}>
-          <select value={gradeForm.studentId} onChange={(e) => setGradeForm((f) => ({ ...f, studentId: e.target.value }))}>
-            <option value="">학생 선택</option>
-            {db.students.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
+          <SearchableSelect
+            value={gradeForm.studentId}
+            onChange={(value) => setGradeForm((f) => ({ ...f, studentId: value }))}
+            placeholder="학생 검색 후 선택"
+            options={studentOptions}
+            emptyMessage="학생 검색 결과가 없습니다."
+          />
           <input placeholder="과목" value={gradeForm.subject} onChange={(e) => setGradeForm((f) => ({ ...f, subject: e.target.value }))} />
           <input type="date" value={gradeForm.date} onChange={(e) => setGradeForm((f) => ({ ...f, date: e.target.value }))} />
           <input type="number" min={0} max={100} value={gradeForm.score} onChange={(e) => setGradeForm((f) => ({ ...f, score: Number(e.target.value) }))} />
@@ -2190,18 +3202,22 @@ function App() {
       <section className="card form-card">
         <h3>납부 등록</h3>
         <form className="grid-form" onSubmit={submitPayment}>
-          <select value={paymentForm.studentId} onChange={(e) => setPaymentForm((f) => ({ ...f, studentId: e.target.value }))}>
-            <option value="">학생 선택</option>
-            {db.students.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
+          <SearchableSelect
+            value={paymentForm.studentId}
+            onChange={(value) => setPaymentForm((f) => ({ ...f, studentId: value }))}
+            placeholder="학생 검색 후 선택"
+            options={studentOptions}
+            emptyMessage="학생 검색 결과가 없습니다."
+          />
           <input type="month" value={paymentForm.month} onChange={(e) => setPaymentForm((f) => ({ ...f, month: e.target.value }))} />
           <input type="number" min={0} value={paymentForm.amount} onChange={(e) => setPaymentForm((f) => ({ ...f, amount: Number(e.target.value) }))} placeholder="수강료" />
-          <select value={paymentForm.status} onChange={(e) => setPaymentForm((f) => ({ ...f, status: e.target.value as '완납' | '미납' }))}>
-            <option value="완납">완납</option>
-            <option value="미납">미납</option>
-          </select>
+          <SearchableSelect
+            value={paymentForm.status}
+            onChange={(value) => setPaymentForm((f) => ({ ...f, status: (value || '완납') as '완납' | '미납' }))}
+            placeholder="납부 상태 선택"
+            options={PAYMENT_STATUS_OPTIONS}
+            emptyMessage="납부 상태 검색 결과가 없습니다."
+          />
           <textarea className="span-2" placeholder="결제 메모" value={paymentForm.memo} onChange={(e) => setPaymentForm((f) => ({ ...f, memo: e.target.value }))} />
           <div className="actions span-2"><button className="btn primary">저장</button></div>
         </form>
@@ -2244,12 +3260,13 @@ function App() {
       <section className="card form-card">
         <h3>상담 기록 등록</h3>
         <form className="grid-form" onSubmit={submitCounsel}>
-          <select value={counselForm.studentId} onChange={(e) => setCounselForm((f) => ({ ...f, studentId: e.target.value }))}>
-            <option value="">학생 선택</option>
-            {db.students.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
+          <SearchableSelect
+            value={counselForm.studentId}
+            onChange={(value) => setCounselForm((f) => ({ ...f, studentId: value }))}
+            placeholder="학생 검색 후 선택"
+            options={studentOptions}
+            emptyMessage="학생 검색 결과가 없습니다."
+          />
           <input type="date" value={counselForm.date} onChange={(e) => setCounselForm((f) => ({ ...f, date: e.target.value }))} />
           <label className="check">
             <input type="checkbox" checked={counselForm.withGuardian} onChange={(e) => setCounselForm((f) => ({ ...f, withGuardian: e.target.checked }))} />
@@ -2350,6 +3367,94 @@ function App() {
       </section>
     </div>
   )
+
+  const renderChangeHistory = () => {
+    const addedCount = changeLogs.filter((log) => log.changeType === '추가').length
+    const updatedCount = changeLogs.filter((log) => log.changeType === '수정').length
+    const deletedCount = changeLogs.filter((log) => log.changeType === '삭제').length
+
+    return (
+      <div className="panel-grid">
+        <section className="stats-grid">
+          <article className="stat-card">
+            <h3>전체 변경 건수</h3>
+            <strong>{changeLogs.length}건</strong>
+          </article>
+          <article className="stat-card">
+            <h3>추가</h3>
+            <strong>{addedCount}건</strong>
+          </article>
+          <article className="stat-card">
+            <h3>수정</h3>
+            <strong>{updatedCount}건</strong>
+          </article>
+          <article className="stat-card">
+            <h3>삭제</h3>
+            <strong>{deletedCount}건</strong>
+          </article>
+        </section>
+
+        <section className="card">
+          <h3>데이터 변경 이력</h3>
+          <p className="helper">이 화면은 현재 앱에서 발생한 데이터 추가/수정/삭제 내역을 항목별로 기록합니다. 기존 데이터는 이 기능 추가 이후부터 추적됩니다.</p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>시각</th>
+                  <th>사용자</th>
+                  <th>작업</th>
+                  <th>데이터</th>
+                  <th>변경 유형</th>
+                  <th>대상</th>
+                  <th>변경 내용</th>
+                </tr>
+              </thead>
+              <tbody>
+                {changeLogs.length === 0 ? (
+                  <tr>
+                    <td colSpan={7}>변경 이력이 없습니다.</td>
+                  </tr>
+                ) : (
+                  changeLogs.map((log) => (
+                    <tr key={log.id}>
+                      <td>{log.createdAt.replace('T', ' ').slice(0, 19)}</td>
+                      <td>{log.actorName} ({log.actorRole})</td>
+                      <td>
+                        <div>{log.action}</div>
+                        <small>{log.detail || '-'}</small>
+                      </td>
+                      <td>{log.entityType}</td>
+                      <td>
+                        <span className={`badge ${log.changeType === '삭제' ? 'bad' : 'ok'}`}>{log.changeType}</span>
+                      </td>
+                      <td>
+                        <div>{log.entityLabel}</div>
+                        <small>{log.entityId}</small>
+                      </td>
+                      <td>
+                        <ul className="change-list">
+                          {log.changes.length === 0 ? (
+                            <li>변경 필드 없음</li>
+                          ) : (
+                            log.changes.map((change) => (
+                              <li key={`${log.id}_${change.field}`}>
+                                <strong>{change.field}</strong>: {change.before} → {change.after}
+                              </li>
+                            ))
+                          )}
+                        </ul>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    )
+  }
 
   const renderStudentDetail = () => {
     if (!selectedStudent) {
@@ -2591,6 +3696,7 @@ function App() {
     if (menu === 'counsels') return renderCounsels()
     if (menu === 'notes') return renderNotes()
     if (menu === 'audit') return renderAudit()
+    if (menu === 'changeHistory') return renderChangeHistory()
     return renderStudentDetail()
   }
 
@@ -2604,6 +3710,7 @@ function App() {
     { key: 'counsels', label: '상담 관리' },
     { key: 'notes', label: '공지/메모' },
     { key: 'audit', label: '감사 로그' },
+    { key: 'changeHistory', label: '데이터 변경이력' },
     { key: 'studentDetail', label: '학생 상세' },
   ]
 
@@ -2624,8 +3731,55 @@ function App() {
           </form>
           <div className="helper">
             <div>원장: admin / Admin1234!</div>
+            <div>부원장: vice / Vice1234!</div>
             <div>강사: teacher / Teacher1234!</div>
             <div>상담: counsel / Counsel1234!</div>
+          </div>
+        </section>
+      </div>
+    )
+  }
+
+  // 로그인 후 서버 DB 로딩 중
+  if (!dbLoaded) {
+    return (
+      <div className="auth-layout">
+        <section className="auth-card" style={{ textAlign: 'center' }}>
+          <h2>데이터 불러오는 중...</h2>
+          <p style={{ color: '#888', marginTop: 8 }}>서버에서 데이터를 가져오고 있습니다.</p>
+        </section>
+      </div>
+    )
+  }
+
+  // 로컬 데이터 마이그레이션 확인
+  if (hasMigratableData) {
+    const migrateToServer = () => {
+      fetch(`${API_BASE_URL}/api/db`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+        body: JSON.stringify({ db }),
+      })
+        .then(() => {
+          setHasMigratableData(false)
+          setNotice('데이터를 서버로 이전했습니다. 이제 모든 기기에서 동일한 데이터를 사용할 수 있습니다.')
+        })
+        .catch(() => setError('서버 저장 실패. 나중에 다시 시도해주세요.'))
+    }
+    return (
+      <div className="auth-layout">
+        <section className="auth-card">
+          <h2>데이터 이전 안내</h2>
+          <p style={{ marginTop: 8 }}>
+            이 PC의 브라우저에 저장된 기존 데이터를 서버로 이전하면<br />
+            모든 기기(PC·핸드폰 등)에서 동일한 데이터를 사용할 수 있습니다.
+          </p>
+          <p style={{ marginTop: 8, color: '#888', fontSize: 13 }}>
+            학생 {db.students.length}명 · 수업 {db.classes.length}개 · 출결 {db.attendances.length}건 데이터가 감지되었습니다.
+          </p>
+          <div className="actions" style={{ marginTop: 16, gap: 8 }}>
+            <button className="btn primary" onClick={migrateToServer}>서버로 이전하기</button>
+            <button className="btn" onClick={() => setHasMigratableData(false)}>건너뛰기</button>
           </div>
         </section>
       </div>

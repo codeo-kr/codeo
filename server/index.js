@@ -38,7 +38,7 @@ const corsOrigins = new Set([
   ...FRONTEND_ORIGINS,
 ].filter(Boolean))
 
-const isLocalDevOrigin = (origin) => /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+const isLocalDevOrigin = (origin) => /^http:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+)(:\d+)?$/.test(origin)
 
 app.use(
   cors({
@@ -172,9 +172,26 @@ app.post('/api/audit', authenticate, async (req, res) => {
   res.status(201).json({ ok: true })
 })
 
-app.get('/api/audit', authenticate, authorize('원장'), (req, res) => {
+app.get('/api/audit', authenticate, authorize('원장', '부원장'), (req, res) => {
   const limit = Math.min(Number(req.query.limit || 300), 2000)
   res.json({ logs: db.data.auditLogs.slice(0, limit) })
+})
+
+// 학원 데이터 DB 조회
+app.get('/api/db', authenticate, (req, res) => {
+  res.json({ db: db.data.academyDb ?? null })
+})
+
+// 학원 데이터 DB 저장 (1MB 제한은 위에서 이미 설정됨)
+app.put('/api/db', authenticate, async (req, res) => {
+  const { db: newDb } = req.body || {}
+  if (!newDb || typeof newDb !== 'object' || Array.isArray(newDb)) {
+    res.status(400).json({ message: '유효하지 않은 데이터입니다.' })
+    return
+  }
+  db.data.academyDb = newDb
+  await db.write()
+  res.json({ ok: true })
 })
 
 app.listen(PORT, () => {

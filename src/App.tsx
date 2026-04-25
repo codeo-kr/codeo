@@ -183,7 +183,7 @@ type TimetableEntry = {
   subject: string
   teacher: string
   time: string
-  students: string[]
+  students: { id: string; name: string }[]
   sessionType: '정규' | '보강'
 }
 
@@ -950,6 +950,7 @@ function App() {
   const [makeupForm, setMakeupForm] = useState({
     absentAttendanceId: '',
     scheduledDate: today,
+    makeupClassId: '',
     memo: '',
   })
   const [makeupPeriod, setMakeupPeriod] = useState({
@@ -957,6 +958,7 @@ function App() {
     endDate: today,
   })
   const [makeupScheduleDraft, setMakeupScheduleDraft] = useState<Record<string, string>>({})
+  const [makeupClassDraft, setMakeupClassDraft] = useState<Record<string, string>>({})
 
   useEffect(() => {
     // 로컬 백업 저장
@@ -1123,15 +1125,36 @@ function App() {
     [],
   )
 
+  const getMakeupClassOptionsForDate = (date: string) => {
+    const scheduledWeekDay = getWeekDayFromDate(date)
+    if (!scheduledWeekDay) return [] as SearchableOption[]
+
+    return [...db.classes]
+      .filter((academyClass) => splitClassDays(academyClass.day).includes(scheduledWeekDay))
+      .sort((left, right) => {
+        if (left.time !== right.time) return left.time.localeCompare(right.time)
+        return left.subject.localeCompare(right.subject, 'ko-KR')
+      })
+      .map((academyClass) => ({
+        value: academyClass.id,
+        label: `${academyClass.subject} (${academyClass.day} ${academyClass.time})`,
+        searchText: `${academyClass.teacher} ${academyClass.room}`,
+      }))
+  }
+
+  const makeupClassOptions = useMemo(
+    () => getMakeupClassOptionsForDate(makeupForm.scheduledDate),
+    [db.classes, makeupForm.scheduledDate],
+  )
+
   const weeklyTimetable = useMemo(() => {
     const activeStudentsByClass = new Map<string, string[]>()
     db.enrollments
       .filter((enrollment) => !enrollment.endDate)
       .forEach((enrollment) => {
-        const studentName = studentMap.get(enrollment.studentId)?.name
-        if (!studentName) return
+        if (!studentMap.get(enrollment.studentId)) return
         const existing = activeStudentsByClass.get(enrollment.classId) ?? []
-        existing.push(studentName)
+        existing.push(enrollment.studentId)
         activeStudentsByClass.set(enrollment.classId, existing)
       })
 
@@ -1147,7 +1170,16 @@ function App() {
         subject: academyClass.subject,
         teacher: academyClass.teacher,
         time: academyClass.time,
-        students: (activeStudentsByClass.get(academyClass.id) ?? []).sort((a, b) => a.localeCompare(b, 'ko-KR')),
+        students: (activeStudentsByClass.get(academyClass.id) ?? [])
+          .sort((leftId, rightId) => {
+            const leftName = studentMap.get(leftId)?.name ?? ''
+            const rightName = studentMap.get(rightId)?.name ?? ''
+            return leftName.localeCompare(rightName, 'ko-KR')
+          })
+          .map((studentId) => ({
+            id: studentId,
+            name: studentMap.get(studentId)?.name ?? '삭제된 학생',
+          })),
         sessionType: '정규',
       }
 
@@ -1180,7 +1212,7 @@ function App() {
         teacher: linkedClass.teacher,
         time: linkedClass.time,
         // For makeup sessions, show only the target student.
-        students: [studentName],
+        students: [{ id: makeup.studentId, name: studentName }],
         sessionType: '보강',
       }
 
@@ -1202,6 +1234,18 @@ function App() {
 
     return schedule
   }, [classMap, db.classes, db.enrollments, db.makeups, studentMap])
+
+  const todayAbsentStudentsByClass = useMemo(() => {
+    const map = new Map<string, Set<string>>()
+    todayAttendances
+      .filter((attendance) => attendance.type === '정규' && attendance.status === '결석')
+      .forEach((attendance) => {
+        const bucket = map.get(attendance.classId) ?? new Set<string>()
+        bucket.add(attendance.studentId)
+        map.set(attendance.classId, bucket)
+      })
+    return map
+  }, [todayAttendances])
 
   const selectedAttendanceClassStudents = useMemo(() => {
     if (!attendanceForm.classId) return [] as Student[]
@@ -1261,6 +1305,19 @@ function App() {
       return nextDrafts
     })
   }, [attendanceForm.classId, attendanceForm.date, db.attendances, db.makeups, selectedAttendanceClassStudents])
+
+  useEffect(() => {
+    if (!makeupForm.makeupClassId) return
+    const selectedWeekDay = getWeekDayFromDate(makeupForm.scheduledDate)
+    const selectedClass = classMap.get(makeupForm.makeupClassId)
+    const isValid = Boolean(
+      selectedWeekDay && selectedClass && splitClassDays(selectedClass.day).includes(selectedWeekDay),
+    )
+
+    if (!isValid) {
+      setMakeupForm((prev) => ({ ...prev, makeupClassId: '' }))
+    }
+  }, [classMap, makeupForm.makeupClassId, makeupForm.scheduledDate])
 
   useEffect(() => {
     if (!currentUser) return
@@ -2101,6 +2158,16 @@ function App() {
       setError('결석 수업을 선택해 주세요.')
       return
     }
+    const selectedMakeupClass = classMap.get(makeupForm.makeupClassId)
+    if (!selectedMakeupClass) {
+      setError('보강을 들을 수업을 선택해 주세요.')
+      return
+    }
+    const scheduledWeekDay = getWeekDayFromDate(makeupForm.scheduledDate)
+    if (!scheduledWeekDay || !splitClassDays(selectedMakeupClass.day).includes(scheduledWeekDay)) {
+      setError('선택한 날짜에 있는 수업만 보강으로 등록할 수 있습니다.')
+      return
+    }
     const already = db.makeups.find((m) => m.absentAttendanceId === absentAttendance.id && m.status !== '완료')
     if (already) {
       setError('이미 보강 예정으로 등록된 결석 수업입니다.')
@@ -2110,7 +2177,7 @@ function App() {
     const next: Makeup = {
       id: uid('makeup'),
       studentId: absentAttendance.studentId,
-      classId: absentAttendance.classId,
+      classId: makeupForm.makeupClassId,
       absentAttendanceId: absentAttendance.id,
       scheduledDate: makeupForm.scheduledDate,
       status: '예정',
@@ -2119,7 +2186,7 @@ function App() {
       createdAt: new Date().toISOString(),
     }
     updateDb((prev) => ({ ...prev, makeups: [next, ...prev.makeups] }), '보강 등록', next.scheduledDate)
-    setMakeupForm({ absentAttendanceId: '', scheduledDate: today, memo: '' })
+    setMakeupForm({ absentAttendanceId: '', scheduledDate: today, makeupClassId: '', memo: '' })
   }
 
   const completeMakeup = (makeupId: string, attended: boolean) => {
@@ -2162,6 +2229,57 @@ function App() {
         m.id === makeupId && m.status === '예정' ? { ...m, scheduledDate: nextDate } : m,
       ),
     }), '보강 일정 변경', makeupId)
+  }
+
+  const changeMakeupClass = (makeupId: string) => {
+    const nextClassId = makeupClassDraft[makeupId]
+    if (!nextClassId) {
+      setError('변경할 보강 수업을 선택해 주세요.')
+      return
+    }
+
+    const makeup = db.makeups.find((item) => item.id === makeupId)
+    const nextClass = classMap.get(nextClassId)
+    if (!makeup || !nextClass) {
+      setError('선택한 보강 수업을 찾을 수 없습니다.')
+      return
+    }
+
+    const scheduledWeekDay = getWeekDayFromDate(makeup.scheduledDate)
+    if (!scheduledWeekDay || !splitClassDays(nextClass.day).includes(scheduledWeekDay)) {
+      setError('선택한 날짜에 있는 수업만 보강으로 선택할 수 있습니다.')
+      return
+    }
+
+    updateDb((prev) => ({
+      ...prev,
+      makeups: prev.makeups.map((makeup) =>
+        makeup.id === makeupId && makeup.status === '예정'
+          ? { ...makeup, classId: nextClassId }
+          : makeup,
+      ),
+    }), '보강 수업 변경', makeupId)
+  }
+
+  const cancelMakeup = (makeupId: string) => {
+    const targetMakeup = db.makeups.find((makeup) => makeup.id === makeupId)
+    if (!targetMakeup) return
+
+    if (targetMakeup.status !== '예정') {
+      setError('예정 상태인 보강만 취소할 수 있습니다.')
+      return
+    }
+
+    if (!window.confirm('이 보강 예정과 관련 메모를 삭제할까요?')) {
+      return
+    }
+
+    updateDb((prev) => ({
+      ...prev,
+      makeups: prev.makeups.filter((makeup) => makeup.id !== makeupId),
+    }), '보강 취소', makeupId)
+
+    setNotice('보강 예정이 취소되었습니다.')
   }
 
   const cancelAttendanceRecord = (attendanceId: string) => {
@@ -2360,8 +2478,8 @@ function App() {
                             {entries.length ? (
                               <div className="timetable-cell-list">
                                 {entries.map((entry) => {
-                                  const visibleStudents = entry.students.slice(0, 3)
-                                  const restStudentCount = Math.max(entry.students.length - visibleStudents.length, 0)
+                                  const studentLabel = entry.sessionType === '보강' ? '보강 대상' : '학생'
+                                  const absentStudentIds = todayAbsentStudentsByClass.get(entry.classId) ?? new Set<string>()
 
                                   return (
                                     <article key={`${entry.classId}_${day}_${slot}`} className="timetable-item">
@@ -2373,8 +2491,23 @@ function App() {
                                       </strong>
                                       <small>{entry.time} · {entry.teacher}</small>
                                       <small>
-                                        학생: {visibleStudents.join(', ') || '-'}
-                                        {restStudentCount > 0 ? ` 외 ${restStudentCount}명` : ''}
+                                        {studentLabel}:{' '}
+                                        {entry.students.length > 0
+                                          ? entry.students.map((student, index) => (
+                                              <span key={student.id}>
+                                                <span
+                                                  className={
+                                                    entry.sessionType === '정규' && absentStudentIds.has(student.id)
+                                                      ? 'student-name absent'
+                                                      : 'student-name'
+                                                  }
+                                                >
+                                                  {student.name}
+                                                </span>
+                                                {index < entry.students.length - 1 ? ', ' : ''}
+                                              </span>
+                                            ))
+                                          : '-'}
                                       </small>
                                     </article>
                                   )
@@ -2784,9 +2917,7 @@ function App() {
       return matchedStudent && matchedClass && matchedStatus && matchedStartDate && matchedEndDate
     })
 
-    const filteredRegularAbsents = regularAbsents.filter((attendance) =>
-      isInMakeupPeriod(attendance.date),
-    )
+    const filteredRegularAbsents = regularAbsents.filter((attendance) => isInMakeupPeriod(attendance.date))
 
     const filteredMakeups = byRecent(db.makeups).filter((makeup) => {
       const absentAttendance = db.attendances.find(
@@ -2987,7 +3118,7 @@ function App() {
             <SearchableSelect
               value={makeupForm.absentAttendanceId}
               onChange={(value) => setMakeupForm((f) => ({ ...f, absentAttendanceId: value }))}
-              placeholder="결석 수업 검색 후 선택"
+              placeholder="결석 수업 선택"
               options={filteredRegularAbsents.map((attendance) => ({
                 value: attendance.id,
                 label: `${attendance.date} ${attendance.time || ''} · ${studentMap.get(attendance.studentId)?.name ?? '삭제된 학생'} · ${classMap.get(attendance.classId)?.subject ?? '삭제된 수업'}`,
@@ -2996,6 +3127,13 @@ function App() {
               emptyMessage="선택 가능한 결석 수업이 없습니다."
             />
             <input type="date" value={makeupForm.scheduledDate} onChange={(e) => setMakeupForm((f) => ({ ...f, scheduledDate: e.target.value }))} />
+            <SearchableSelect
+              value={makeupForm.makeupClassId}
+              onChange={(value) => setMakeupForm((f) => ({ ...f, makeupClassId: value }))}
+              placeholder="보강을 들을 수업 선택"
+              options={makeupClassOptions}
+              emptyMessage="선택한 날짜에 있는 수업이 없습니다."
+            />
             <input placeholder="보강 메모" value={makeupForm.memo} onChange={(e) => setMakeupForm((f) => ({ ...f, memo: e.target.value }))} />
             <button type="submit" className="btn primary">보강 예정 등록</button>
           </form>
@@ -3007,6 +3145,7 @@ function App() {
                   <th>학생</th>
                   <th>결석 수업</th>
                   <th>보강 예정일</th>
+                  <th>보강 수업</th>
                   <th>출석 여부</th>
                   <th>완료 여부</th>
                   <th>관리</th>
@@ -3020,6 +3159,7 @@ function App() {
                       <td>{studentMap.get(m.studentId)?.name ?? '삭제된 학생'}</td>
                       <td>{absent?.date} {absent?.time || ''} · {classMap.get(m.classId)?.subject}</td>
                       <td>{m.scheduledDate}</td>
+                      <td>{classMap.get(m.classId)?.subject ?? '삭제된 수업'}</td>
                       <td>{m.attended ? '출석' : '미출석'}</td>
                       <td>{m.status}</td>
                       <td className="row-actions">
@@ -3033,6 +3173,15 @@ function App() {
                               }
                             />
                             <button className="btn mini" onClick={() => changeMakeupSchedule(m.id)}>일정 변경</button>
+                            <SearchableSelect
+                              value={makeupClassDraft[m.id] ?? m.classId}
+                              onChange={(value) => setMakeupClassDraft((prev) => ({ ...prev, [m.id]: value }))}
+                              placeholder="보강 수업 선택"
+                              options={getMakeupClassOptionsForDate(m.scheduledDate)}
+                              emptyMessage="해당 날짜에 있는 수업이 없습니다."
+                            />
+                            <button className="btn mini" onClick={() => changeMakeupClass(m.id)}>수업 변경</button>
+                            <button className="btn mini danger" onClick={() => cancelMakeup(m.id)}>보강 취소</button>
                             <button className="btn mini" onClick={() => completeMakeup(m.id, true)}>출석 완료</button>
                             <button className="btn mini danger" onClick={() => completeMakeup(m.id, false)}>미출석 완료</button>
                           </>
@@ -3123,7 +3272,7 @@ function App() {
                     <td colSpan={9}>조회 조건에 맞는 출결 내역이 없습니다.</td>
                   </tr>
                 ) : filteredAttendanceHistory.map((a) => (
-                  <tr key={a.id}>
+                  <tr key={a.id} className={a.status === '결석' ? 'attendance-history-row absent' : 'attendance-history-row'}>
                     <td>{a.date}</td>
                     <td>{a.time || '-'}</td>
                     <td>{studentMap.get(a.studentId)?.name ?? '삭제된 학생'}</td>

@@ -271,6 +271,15 @@
   font-size: 12px;
 }
 
+.student-name {
+  color: #20394e;
+}
+
+.student-name.absent {
+  color: #c53434;
+  font-weight: 700;
+}
+
 .timetable-empty {
   color: #8aa0b3;
 }
@@ -372,6 +381,16 @@
 .search-select-option:hover,
 .search-select-option.active {
   background: #eef6fb;
+}
+
+.attendance-history-row.absent {
+  background: #fff4f4;
+}
+
+.attendance-history-row.absent td,
+.attendance-history-row.absent td * {
+  color: #c53434;
+}
 }
 
 .search-select-empty {

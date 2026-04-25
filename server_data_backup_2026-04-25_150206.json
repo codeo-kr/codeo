@@ -27,87 +27,6 @@
   ],
   "auditLogs": [
     {
-      "id": "n4PcfzZBXlPHRvT3EmJAv",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "로그인",
-      "detail": "서버 인증 로그인",
-      "createdAt": "2026-04-25T07:30:07.998Z"
-    },
-    {
-      "id": "1wK0yIkqt4M8aI8bcS3ud",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "로그인",
-      "detail": "서버 인증 로그인",
-      "createdAt": "2026-04-25T07:29:25.219Z"
-    },
-    {
-      "id": "sAq6Mg0n6SRaisKzE0B8S",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "출결 저장",
-      "detail": "class_sa15_youchaemin:2026-04-25",
-      "createdAt": "2026-04-25T07:24:07.895Z"
-    },
-    {
-      "id": "kSr1Z8fyIH3XA_yrBH7bY",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "출결 저장",
-      "detail": "class_sa15_wonjang:2026-04-25",
-      "createdAt": "2026-04-25T07:23:53.157Z"
-    },
-    {
-      "id": "neTAsslCOjcgfNf-Wu6sX",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "보강 수업 변경",
-      "detail": "makeup_zu953d_modz36aa",
-      "createdAt": "2026-04-25T07:13:51.225Z"
-    },
-    {
-      "id": "9uaF0VF7Z-7Zx4HJu-3ld",
-      "actorId": "vice",
-      "actorName": "부원장계정",
-      "actorRole": "부원장",
-      "action": "로그인",
-      "detail": "서버 인증 로그인",
-      "createdAt": "2026-04-25T06:51:59.850Z"
-    },
-    {
-      "id": "BYKBw7PoRwUff5DicXxPh",
-      "actorId": "vice",
-      "actorName": "부원장계정",
-      "actorRole": "부원장",
-      "action": "보강 등록",
-      "detail": "2026-04-30",
-      "createdAt": "2026-04-25T06:42:59.455Z"
-    },
-    {
-      "id": "66bsIcT1UxOAqByo5U_tZ",
-      "actorId": "admin",
-      "actorName": "원장계정",
-      "actorRole": "원장",
-      "action": "출결 저장",
-      "detail": "class_sa13_wonjang:2026-04-25",
-      "createdAt": "2026-04-25T06:33:02.601Z"
-    },
-    {
-      "id": "MRIMfCSDSNu463P7ERdh9",
-      "actorId": "vice",
-      "actorName": "부원장계정",
-      "actorRole": "부원장",
-      "action": "출결 저장",
-      "detail": "class_sa15_buwonjang:2026-04-25",
-      "createdAt": "2026-04-25T06:21:37.009Z"
-    },
-    {
       "id": "_Kx7V_zP865UuhkNWvfi-",
       "actorId": "vice",
       "actorName": "부원장계정",
@@ -3289,72 +3208,6 @@
     ],
     "attendances": [
       {
-        "id": "att_etbk0e_moe0k1n8",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_youchaemin",
-        "studentId": "stu_ojj3id_modpmsrf",
-        "status": "출석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T07:24:07.892Z"
-      },
-      {
-        "id": "att_x8nn22_moe0jq9t",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_wonjang",
-        "studentId": "stu_itvcep_modpmsre",
-        "status": "출석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T07:23:53.153Z"
-      },
-      {
-        "id": "att_98m667_modybopo",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_buwonjang",
-        "studentId": "stu_0ojw7z_modpmsre",
-        "status": "출석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T06:21:38.652Z"
-      },
-      {
-        "id": "att_ue0teg_modybopo",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_buwonjang",
-        "studentId": "stu_mto4m5_modpmsre",
-        "status": "출석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T06:21:38.652Z"
-      },
-      {
-        "id": "att_hlbpn5_modybopo",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_buwonjang",
-        "studentId": "stu_yjajpt_modpmsrf",
-        "status": "결석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T06:21:38.652Z"
-      },
-      {
-        "id": "att_jhvgpf_modybopo",
-        "date": "2026-04-25",
-        "time": "15:00",
-        "classId": "class_sa15_buwonjang",
-        "studentId": "stu_r7as83_modpmsrf",
-        "status": "출석",
-        "type": "정규",
-        "memo": "",
-        "createdAt": "2026-04-25T06:21:38.652Z"
-      },
-      {
         "id": "att_5oro0v_modwstyu",
         "date": "2026-04-25",
         "time": "13:00",
@@ -3537,18 +3390,6 @@
         "createdAt": "2026-04-17T09:10:00.000Z"
       }
     ],
-    "makeups": [
-      {
-        "id": "makeup_zu953d_modz36aa",
-        "studentId": "stu_yjajpt_modpmsrf",
-        "classId": "class_th19_buwonjang",
-        "absentAttendanceId": "att_hlbpn5_modybopo",
-        "scheduledDate": "2026-04-30",
-        "status": "예정",
-        "attended": false,
-        "memo": "19시",
-        "createdAt": "2026-04-25T06:43:01.138Z"
-      }
-    ]
+    "makeups": []
   }
 }

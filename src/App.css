@@ -546,7 +546,7 @@ thead th {
 
 .attendance-status-control {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 6px;
 }
 

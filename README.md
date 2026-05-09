@@ -8,6 +8,14 @@
 - 따라서 같은 URL로 접속하더라도 기기마다 데이터가 따로 저장됩니다.
 - 같은 네트워크 밖에서도 접속 자체는 가능하지만, 여러 기기에서 동일 데이터를 공유하려면 백엔드 + DB가 필요합니다.
 
+유지보수용 메모는 [docs/MAINTENANCE.md](docs/MAINTENANCE.md)에 따로 정리해 두었습니다.
+
+추가 문서:
+
+- [API 명세](docs/API_REFERENCE.md)
+- [배포 가이드](docs/DEPLOYMENT.md)
+- [트러블슈팅 가이드](docs/TROUBLESHOOTING.md)
+
 ## 기술 스택
 
 - React 18 + TypeScript + Vite

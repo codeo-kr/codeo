@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import * as XLSX from 'xlsx'
 import './App.css'
 
@@ -93,7 +93,7 @@ type Enrollment = {
   createdAt: string
 }
 
-type AttendanceStatus = '출석' | '지각' | '결석' | '조퇴'
+type AttendanceStatus = '출석' | '지각' | '결석' | '조퇴' | '결석예정'
 type AttendanceType = '정규' | '보강'
 
 type Attendance = {
@@ -235,6 +235,7 @@ const ATTENDANCE_HISTORY_STATUS_OPTIONS: SearchableOption[] = [
   { value: '지각', label: '지각' },
   { value: '결석', label: '결석' },
   { value: '조퇴', label: '조퇴' },
+  { value: '결석예정', label: '결석예정' },
 ]
 const STUDENT_SORT_OPTIONS: SearchableOption[] = [
   { value: 'createdAt', label: '최신 등록순' },
@@ -429,6 +430,36 @@ function buildDataChangeLogs(previousDb: DB, nextDb: DB, actor: AuthUser | null,
   })
 
   return logs
+}
+
+type DbPatch = {
+  collection: DBCollectionKey
+  upserts: Array<Record<string, unknown>>
+  deletes: string[]
+}
+
+function buildDbPatches(previousDb: DB, nextDb: DB) {
+  const patches: DbPatch[] = []
+
+  DB_COLLECTION_KEYS.forEach((collection) => {
+    const previousItems = previousDb[collection] as Array<Record<string, unknown>>
+    const nextItems = nextDb[collection] as Array<Record<string, unknown>>
+    const previousMap = new Map(previousItems.map((item) => [String(item.id), item]))
+    const nextMap = new Map(nextItems.map((item) => [String(item.id), item]))
+
+    const upserts = [...nextMap.values()].filter((nextItem) => {
+      const previousItem = previousMap.get(String(nextItem.id))
+      return !previousItem || JSON.stringify(previousItem) !== JSON.stringify(nextItem)
+    })
+
+    const deletes = [...previousMap.keys()].filter((itemId) => !nextMap.has(itemId))
+
+    if (upserts.length > 0 || deletes.length > 0) {
+      patches.push({ collection, upserts, deletes })
+    }
+  })
+
+  return patches
 }
 
 function parseTimeToMinute(value: string) {
@@ -855,7 +886,6 @@ function App() {
   const [db, setDb] = useState<DB>(seedDb)
   const [dbLoaded, setDbLoaded] = useState(false)
   const [hasMigratableData, setHasMigratableData] = useState(false)
-  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(loadAuthUser)
   const [authToken, setAuthToken] = useState<string>(loadAuthToken)
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(loadAuditLogs)
@@ -963,17 +993,7 @@ function App() {
   useEffect(() => {
     // 로컬 백업 저장
     localStorage.setItem(STORAGE_KEY, JSON.stringify(db))
-    if (!dbLoaded || !authToken) return
-    // 서버에 디바운스 저장 (1초 후)
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
-    saveTimerRef.current = setTimeout(() => {
-      fetch(`${API_BASE_URL}/api/db`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
-        body: JSON.stringify({ db }),
-      }).catch(() => {})
-    }, 1000)
-  }, [db, dbLoaded, authToken])
+  }, [db])
 
   // 로그인 후 서버에서 DB 로드
   useEffect(() => {
@@ -1377,13 +1397,27 @@ function App() {
   const updateDb = (updater: (prev: DB) => DB, action?: string, detail?: string) => {
     setError('')
     setNotice('')
-    const nextDb = updater(db)
+    const previousDb = db
+    const nextDb = updater(previousDb)
     setDb(nextDb)
     if (action) appendAudit(action, detail ?? '')
 
-    const nextChangeLogs = buildDataChangeLogs(db, nextDb, currentUser, action ?? '데이터 변경', detail ?? '')
+    const nextChangeLogs = buildDataChangeLogs(previousDb, nextDb, currentUser, action ?? '데이터 변경', detail ?? '')
     if (nextChangeLogs.length > 0) {
       setChangeLogs((prev) => [...nextChangeLogs, ...prev].slice(0, 8000))
+    }
+
+    if (dbLoaded && authToken) {
+      const patches = buildDbPatches(previousDb, nextDb)
+      if (patches.length > 0) {
+        fetch(`${API_BASE_URL}/api/db`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+          body: JSON.stringify({ patches }),
+        }).catch(() => {
+          setError('서버 동기화에 실패했습니다. 데이터는 브라우저에 남아 있지만 다른 기기와 즉시 공유되지 않을 수 있습니다.')
+        })
+      }
     }
   }
 
@@ -1483,7 +1517,7 @@ function App() {
       let updated = 0
       let skippedMissingRequired = 0
 
-      setDb((prev) => {
+      updateDb((prev) => {
         const currentStudents = [...prev.students]
         const phoneToIndex = new Map<string, number>()
         currentStudents.forEach((s, index) => {
@@ -1549,7 +1583,7 @@ function App() {
           ...prev,
           students: [...nextStudents, ...currentStudents],
         }
-      })
+      }, '학생 엑셀 일괄등록', '엑셀 일괄등록')
 
       if (inserted === 0 && updated === 0) {
         setError('처리된 학생이 없습니다. 헤더명 또는 필수값(이름/학년)을 확인해 주세요.')
@@ -2155,7 +2189,7 @@ function App() {
     e.preventDefault()
     const absentAttendance = db.attendances.find((a) => a.id === makeupForm.absentAttendanceId)
     if (!absentAttendance) {
-      setError('결석 수업을 선택해 주세요.')
+      setError('결석 또는 결석예정 수업을 선택해 주세요.')
       return
     }
     const selectedMakeupClass = classMap.get(makeupForm.makeupClassId)
@@ -2344,7 +2378,9 @@ function App() {
 
   const selectedStudent = db.students.find((s) => s.id === selectedStudentId)
 
-  const regularAbsents = db.attendances.filter((a) => a.type === '정규' && a.status === '결석')
+  const regularAbsents = db.attendances.filter(
+    (a) => a.type === '정규' && (a.status === '결석' || a.status === '결석예정'),
+  )
 
   const renderDashboard = () => {
     const recentStudents = byRecent(db.students).slice(0, 5)
@@ -2933,7 +2969,7 @@ function App() {
       <div className="panel-grid">
         <section className="card form-card">
           <h3>출결 등록</h3>
-          <p className="helper">수업을 선택하면 배정된 학생 전체를 한 번에 출석체크할 수 있습니다. 정규 수업의 출석/지각/결석/조퇴는 회차 차감 대상입니다.</p>
+          <p className="helper">수업을 선택하면 배정된 학생 전체를 한 번에 출석체크할 수 있습니다. 정규 수업의 출석/지각/결석/조퇴는 회차 차감 대상이며, 결석예정은 회차에 반영되지 않습니다.</p>
           <form className="grid-form" onSubmit={submitAttendance}>
             <input type="date" value={attendanceForm.date} onChange={(e) => setAttendanceForm((f) => ({ ...f, date: e.target.value }))} />
             <SearchableSelect
@@ -3018,6 +3054,14 @@ function App() {
                                   onChange={() => setAttendanceStatus('결석')}
                                 />
                                 결석
+                              </label>
+                              <label className="check">
+                                <input
+                                  type="checkbox"
+                                  checked={draft.status === '결석예정'}
+                                  onChange={() => setAttendanceStatus('결석예정')}
+                                />
+                                결석예정
                               </label>
                               <label className="check">
                                 <input
@@ -3113,18 +3157,18 @@ function App() {
               기간 초기화
             </button>
           </div>
-          <p className="helper">결석일 또는 보강예정일이 선택한 기간에 포함된 항목만 표시됩니다.</p>
+          <p className="helper">결석일, 결석예정일 또는 보강예정일이 선택한 기간에 포함된 항목만 표시됩니다.</p>
           <form className="inline-form" onSubmit={submitMakeup}>
             <SearchableSelect
               value={makeupForm.absentAttendanceId}
               onChange={(value) => setMakeupForm((f) => ({ ...f, absentAttendanceId: value }))}
-              placeholder="결석 수업 선택"
+              placeholder="결석/결석예정 수업 선택"
               options={filteredRegularAbsents.map((attendance) => ({
                 value: attendance.id,
                 label: `${attendance.date} ${attendance.time || ''} · ${studentMap.get(attendance.studentId)?.name ?? '삭제된 학생'} · ${classMap.get(attendance.classId)?.subject ?? '삭제된 수업'}`,
                 searchText: `${studentMap.get(attendance.studentId)?.grade ?? ''} ${classMap.get(attendance.classId)?.teacher ?? ''}`,
               }))}
-              emptyMessage="선택 가능한 결석 수업이 없습니다."
+              emptyMessage="선택 가능한 결석/결석예정 수업이 없습니다."
             />
             <input type="date" value={makeupForm.scheduledDate} onChange={(e) => setMakeupForm((f) => ({ ...f, scheduledDate: e.target.value }))} />
             <SearchableSelect
@@ -3279,7 +3323,7 @@ function App() {
                     <td>{classMap.get(a.classId)?.subject ?? '삭제된 수업'}</td>
                     <td>{a.type}</td>
                     <td>{a.status}</td>
-                    <td>{a.type === '정규' ? '차감' : '미차감'}</td>
+                    <td>{a.type === '정규' && a.status !== '결석예정' ? '차감' : '미차감'}</td>
                     <td>{a.memo}</td>
                     <td className="row-actions">
                       <button className="btn mini danger" onClick={() => cancelAttendanceRecord(a.id)}>
@@ -3965,6 +4009,7 @@ function App() {
           <div className="topbar-memo">
             <strong>회차 규칙</strong>
             <span>정규 출결(출석/지각/결석/조퇴): 차감</span>
+            <span>결석예정: 미차감</span>
             <span>보강 출석: 미차감</span>
             <button className="btn mini" onClick={handleLogout}>로그아웃</button>
           </div>

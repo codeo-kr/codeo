@@ -113,6 +113,69 @@ const appendAudit = async ({ actorId, actorName, actorRole, action, detail }) =>
   await db.write()
 }
 
+const createEmptyAcademyDb = () => ({
+  students: [],
+  classes: [],
+  enrollments: [],
+  attendances: [],
+  grades: [],
+  payments: [],
+  counsels: [],
+  notes: [],
+  makeups: [],
+})
+
+const ensureAcademyDb = () => {
+  if (!db.data.academyDb || typeof db.data.academyDb !== 'object' || Array.isArray(db.data.academyDb)) {
+    db.data.academyDb = createEmptyAcademyDb()
+    return db.data.academyDb
+  }
+
+  const academyDb = db.data.academyDb
+  const emptyDb = createEmptyAcademyDb()
+  Object.keys(emptyDb).forEach((key) => {
+    if (!Array.isArray(academyDb[key])) {
+      academyDb[key] = []
+    }
+  })
+
+  return academyDb
+}
+
+const applyDbPatches = (patches) => {
+  const academyDb = ensureAcademyDb()
+
+  patches.forEach((patch) => {
+    const collection = patch.collection
+    if (!Array.isArray(academyDb[collection])) {
+      academyDb[collection] = []
+    }
+
+    let nextItems = [...academyDb[collection]]
+    const deleteIds = new Set((patch.deletes ?? []).map((id) => String(id)))
+    if (deleteIds.size > 0) {
+      nextItems = nextItems.filter((item) => !deleteIds.has(String(item.id)))
+    }
+
+    ;(patch.upserts ?? []).forEach((item) => {
+      if (!item || typeof item !== 'object' || Array.isArray(item) || item.id === undefined || item.id === null) {
+        return
+      }
+
+      const itemId = String(item.id)
+      const existingIndex = nextItems.findIndex((currentItem) => String(currentItem.id) === itemId)
+      if (existingIndex >= 0) {
+        nextItems[existingIndex] = item
+        return
+      }
+
+      nextItems.unshift(item)
+    })
+
+    academyDb[collection] = nextItems
+  })
+}
+
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'academy-auth-api' })
 })
@@ -184,11 +247,20 @@ app.get('/api/db', authenticate, (req, res) => {
 
 // 학원 데이터 DB 저장 (1MB 제한은 위에서 이미 설정됨)
 app.put('/api/db', authenticate, async (req, res) => {
-  const { db: newDb } = req.body || {}
+  const { db: newDb, patches } = req.body || {}
+
+  if (Array.isArray(patches)) {
+    applyDbPatches(patches)
+    await db.write()
+    res.json({ ok: true })
+    return
+  }
+
   if (!newDb || typeof newDb !== 'object' || Array.isArray(newDb)) {
     res.status(400).json({ message: '유효하지 않은 데이터입니다.' })
     return
   }
+
   db.data.academyDb = newDb
   await db.write()
   res.json({ ok: true })
